@@ -1,4 +1,7 @@
+--CREATE DATABASE projects;
+
 BEGIN TRANSACTION;
+
 
 DROP TABLE IF EXISTS department, employee, project, project_employee CASCADE;
 

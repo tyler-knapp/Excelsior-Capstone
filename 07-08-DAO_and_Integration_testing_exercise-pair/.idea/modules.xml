@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/m02d07-dao-exercises-pair.iml" filepath="$PROJECT_DIR$/m02d07-dao-exercises-pair.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../tylerknapp-java-blue/module-2/07_Database_Connectivity_DAO/lecture-final/m02d07-dao-lecture-final.iml" filepath="$PROJECT_DIR$/../../tylerknapp-java-blue/module-2/07_Database_Connectivity_DAO/lecture-final/m02d07-dao-lecture-final.iml" />
+    </modules>
+  </component>
+</project>
