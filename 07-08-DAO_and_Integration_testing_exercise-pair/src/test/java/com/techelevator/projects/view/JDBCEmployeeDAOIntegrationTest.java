@@ -99,9 +99,8 @@ public class JDBCEmployeeDAOIntegrationTest {
 
         Assert.assertNotNull("Employee  first name was null", employeeByName.get(0));
         Assert.assertNotNull("Employee last name was null", employeeByName.get(0));
-        Assert.assertEquals("First name not equal", newEmployee.getFirstName(), employeeByName.get(0).getFirstName() );
-        Assert.assertEquals("Last name not equal", newEmployee.getLastName(), employeeByName.get(0).getLastName() );
-
+        Assert.assertEquals("First name not equal", newEmployee.getFirstName(), employeeByName.get(0).getFirstName());
+        Assert.assertEquals("Last name not equal", newEmployee.getLastName(), employeeByName.get(0).getLastName());
     }
 
     @Test
@@ -112,13 +111,15 @@ public class JDBCEmployeeDAOIntegrationTest {
         createNewTestDepartment(department);
 
         Employee employee = getEmployee("testFirst", "testLast");
+        //Need to set the department_id in Employee
         employee.setDepartmentId(department.getId());
         createNewTestEmployee(employee);
 
-        //Employee employeeFromDatabase = employeeDAO.getEmployeesByDepartmentId(employee.getDepartmentId());
         List<Employee> employeesByDepartment = employeeDAO.getEmployeesByDepartmentId(employee.getDepartmentId());
+
         Assert.assertNotNull("Employee by department was null", employeesByDepartment);
-        Assert.assertEquals("Employee by department not equal", employee, employeesByDepartment);
+        //Need to utilize .get() on employeesByDepartment to return the employee and not the list itself
+        Assert.assertEquals("Employee by department not equal", employee, employeesByDepartment.get(0));
     }
 
     private Employee getEmployee(String firstName, String lastName) {

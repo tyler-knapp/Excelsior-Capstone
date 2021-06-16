@@ -63,7 +63,7 @@ public class JDBCProjectDAOIntegrationTest {
     }
 
     @Test
-    public void retrieve_all_active_projects() {
+    public void retrieve_all_projects() {
         List<Project> originalList = projectDAO.getAllActiveProjects();
         Project projectOne = getProject("tesName");
         Project projectTwo = getProject("testName2");
@@ -73,6 +73,19 @@ public class JDBCProjectDAOIntegrationTest {
         List<Project> projectsFromDatabase = projectDAO.getAllActiveProjects();
 
         Assert.assertEquals(originalList.size() + 2, projectsFromDatabase.size());
+    }
+
+    @Test
+    public void retrieve_all_active_projects() {
+        List<Project> currentProject = projectDAO.getAllActiveProjects();
+        LocalDate yesterday = LocalDate.now().minusDays(10);
+        insertProject("activeTest", yesterday, null);
+        insertProject("inactiveProject", null, null);
+
+        List<Project> actualProject = projectDAO.getAllActiveProjects();
+
+        Assert.assertNotNull(actualProject);
+        Assert.assertEquals(currentProject.size() + 2, actualProject.size());
     }
 
     @Test
@@ -120,6 +133,11 @@ public class JDBCProjectDAOIntegrationTest {
         Assert.assertEquals("Employee not added", isEmployeeInList(employee, employeesOnProjectAfterAdd), true);
     }
 
+    private void insertProject(String projectName, LocalDate toDate, LocalDate fromDate) {
+        String sql = "INSERT INTO project (project_id, name, from_date, to_date) VALUES (DEFAULT, ?, ?, ?)";
+        jdbcTemplate.update(sql, projectName, toDate, fromDate);
+    }
+
     private Boolean isEmployeeInList(Employee employee, List<Employee> employees) {
         for(Employee employeeToCheck: employees) {
             if (employeeToCheck.equals(employee)) {
@@ -128,6 +146,7 @@ public class JDBCProjectDAOIntegrationTest {
         }
         return false;
     }
+
     private void createNewTestProject(Project newProject) {
         String sql = "INSERT INTO project (project_id, name) VALUES (DEFAULT, ?) RETURNING project_id";
         SqlRowSet row = jdbcTemplate.queryForRowSet(sql, newProject.getName());
