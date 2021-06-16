@@ -48,7 +48,7 @@ public class JDBCDepartmentDAOIntegrationTest {
     }
 
     @Before
-    public void steupBeforeTest() {
+    public void setupBeforeTest() {
         departmentDAO = new JDBCDepartmentDAO(dataSource);
         jdbcTemplate = new JdbcTemplate(dataSource);
     }

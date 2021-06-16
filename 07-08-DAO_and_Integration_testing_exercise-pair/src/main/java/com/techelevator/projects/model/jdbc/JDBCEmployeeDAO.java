@@ -34,12 +34,13 @@ public class JDBCEmployeeDAO implements EmployeeDAO {
 
 	@Override
 	public List<Employee> searchEmployeesByName(String firstNameSearch, String lastNameSearch) {
+		Employee employee = null;
 		String sql = "SELECT employee_id, department_id, first_name, last_name, birth_date, hire_date From employee WHERE first_name ILIKE ? AND last_name ILIKE ?";
 		SqlRowSet rows = jdbcTemplate.queryForRowSet(sql, "%" + firstNameSearch + "%", "%" + lastNameSearch + "%");
 		List<Employee> employees = new ArrayList<Employee>();
 
 		while(rows.next()){
-			Employee employee = mapRowToEmployee(rows);
+			employee = mapRowToEmployee(rows);
 			employees.add(employee);
 		}
 		return employees;
