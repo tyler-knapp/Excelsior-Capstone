@@ -4,30 +4,30 @@ Congratulations! Word has gotten out that you know your way around the complexit
 
 Below are the features and requirements Excelsior Venues is looking for you and your team to complete:
 
-1. As a user of the system, I need the ability to view a list of all of the unique venues in the system, sorted alphabetically by name.
+1. **(MVP)** As a user of the system, I need the ability to view a list of all of the unique venues in the system, sorted alphabetically by name.
    - A venue includes an id, name, city, state, description, and category. A venue _may have many_ categories.
-2. As a user of the system, I need the ability to select a venue that my customer would like to host an event at and see a list of all spaces for the venue.
+2. **(MVP)** As a user of the system, I need the ability to select a venue that my customer would like to host an event at and see a list of all spaces for the venue.
    - A space includes an id, name, open month, closing month, maximum occupancy, wheelchair accessibility, and a daily rate. 
    - A space may be blocked out for various months during the year. For instance, if the space is outdoors or is generally closed for repairs and maintenance during specific months, this will be represented with the open month and closing month.
    - If the open month and closing month do not have any dates, there are not any availability restrictions based on the month.
-3. As a user of the system, I need the ability to select a space and search for availability so I can reserve the space.
+3. **(MVP)** As a user of the system, I need the ability to select a space and search for availability so I can reserve the space.
    - A reservation search only requires the desired space, a start date, and an end date.
    - A space is unavailable if any part of their preferred date range overlaps with an existing reservation.
    - If no spaces are available, indicate to the user that there are no available spaces and ask them if they would like to try a different search. If they answer yes, restart the search dialog.
    - The TOP 5 spaces should be displayed along with the cost for the total reservation.
-   - BONUS: If a date range is entered that occurs when the space is closed, then the space should not be listed in the available spaces.
-   - BONUS: Provide advanced search functionality that allows users to indicate requirements they have based on accessibility needs, a category, and a daily budget.
-4. As a user of the system, once I find a space that is available based on my needs, I am able to book a reservation for the space.
+   - **(Non-MVP)**: If a date range is entered that occurs when the space is closed, then the space should not be listed in the available spaces.
+   - **(Non-MVP)**: Provide advanced search functionality that allows users to indicate requirements they have based on accessibility needs, a category, and a daily budget.
+4. **(MVP)** As a user of the system, once I find a space that is available based on my needs, I am able to book a reservation for the space.
     - A space requires the name of the person or group reserving the space, a start date, and an end date.
     - A confirmation id is presented to the user once the reservation has been added to the system.
-5. BONUS: As a user of the system, I want the ability to search for available spaces across all venues based on my needs so I can make a reservation.
+5. **(Non-MVP)** As a user of the system, I want the ability to search for available spaces across all venues based on my needs so I can make a reservation.
     - Up to 5 spaces for each venue should be displayed if they have availability.
     - The same rules apply as the space search.
-6. BONUS: As a user of the system, I would like the ability to see a list of all upcoming reservations within the next 30 days for a selected venue.
+6. **(Non-MVP)** As a user of the system, I would like the ability to see a list of all upcoming reservations within the next 30 days for a selected venue.
 
 ## Sample Screens
 
-### Main Menu
+### MVP: Main Menu
 
 ```
 What would you like to do?
@@ -35,7 +35,7 @@ What would you like to do?
     Q) Quit
 ```
 
-### View Venues
+### MVP: View Venues
 
 ```
 Which venue would you like to view?
@@ -45,7 +45,7 @@ Which venue would you like to view?
     4) ...
     R) Return to Previous Screen
 ```
-### Venue Details
+### MVP: Venue Details
 
 ```
 Runaway Time Emporium
@@ -60,7 +60,7 @@ What would you like to do next?
     R) Return to Previous Screen
 ```
 
-### List Venue Spaces
+### MVP: List Venue Spaces
 
 ```
 Runaway Time Emporium Spaces
@@ -79,7 +79,7 @@ What would you like to do next?
     R) Return to Previous Screen
 ```
 
-### Reserve a Space
+### MVP: Reserve a Space
 
 ```
 When do you need the space? 9/29/2019
@@ -107,7 +107,9 @@ Confirmation #: 98783478
     Total Cost: $1,750
 ```
 
-### BONUS: Advanced Venue Search
+### Non-MVP: Advanced Venue Search
+
+The Search for a Space menu option only needs to be added to the main menu if the requirment is completed.  If the Display Reservations requirement has also be completed then both will be on the menu.
 
 ```
 What would you like to do?
@@ -158,7 +160,9 @@ Confirmation #: 78783492
     Total Cost: $400
 ```
 
-### BONUS: Display Reservations
+### Non-MVP: Display Reservations
+
+The Display Reservations menu option only needs to be added to the main menu if the requirment is completed.  If the Search for a Reservation requirement has also be completed then both will be on the menu.
 
 ```
 What would you like to do?
