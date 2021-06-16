@@ -37,7 +37,8 @@ public class JDBCProjectDAO implements ProjectDAO {
 	@Override
 	public void removeEmployeeFromProject(Long projectId, Long employeeId) {
 		String sql = "DELETE FROM project_employee WHERE project_id = ? AND employee_id = ?";
-		jdbcTemplate.update(sql, employeeId, projectId);
+		//had to swap to correct order (we originally add employeeId and then projectId
+		jdbcTemplate.update(sql, projectId, employeeId);
 		
 	}
 

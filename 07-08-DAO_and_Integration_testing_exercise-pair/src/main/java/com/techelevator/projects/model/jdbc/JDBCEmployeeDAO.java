@@ -75,16 +75,18 @@ public class JDBCEmployeeDAO implements EmployeeDAO {
 
 	@Override
 	public List<Employee> getEmployeesByProjectId(Long projectId) {
+		//Added a WHERE clause, we weren't filtering by projectId
 		String sql = "SELECT employee.employee_id, department_id, first_name, last_name, birth_date, hire_date, project_id FROM employee " +
-				"LEFT JOIN project_employee ON employee.employee_id = project_employee.employee_id";
-		SqlRowSet rows = jdbcTemplate.queryForRowSet(sql);
+				"INNER JOIN project_employee ON employee.employee_id = project_employee.employee_id WHERE project_employee.project_id = ?";
+		SqlRowSet rows = jdbcTemplate.queryForRowSet(sql, projectId);
 		List<Employee> employees = new ArrayList<Employee>();
 
 		while(rows.next()){
 			Employee employee = mapRowToEmployee(rows);
-			if ( rows.getLong("project_id") != 0){
+			//Removed the below if statement because none of the project_id were null since employees had to be assigned to projects
+			//if ( rows.getLong("project_id") != 0){
 				employees.add(employee);
-			}
+			//}
 		}
 		return employees;
 	}

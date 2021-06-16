@@ -1,6 +1,7 @@
 package com.techelevator.projects.model;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class Employee {
 	private Long employeeId;
@@ -48,5 +49,18 @@ public class Employee {
 	}
 	public String toString() {
 		return lastName + ", " + firstName;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Employee employee = (Employee) o;
+		return Objects.equals(employeeId, employee.employeeId) && Objects.equals(departmentId, employee.departmentId) && Objects.equals(firstName, employee.firstName) && Objects.equals(lastName, employee.lastName) && Objects.equals(birthDay, employee.birthDay) && Objects.equals(hireDate, employee.hireDate);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(employeeId, departmentId, firstName, lastName, birthDay, hireDate);
 	}
 }
