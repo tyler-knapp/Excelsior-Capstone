@@ -96,6 +96,8 @@ public class JDBCEmployeeDAOIntegrationTest {
         Department department = getDepartment("TestDepartment");
         createNewTestDepartment(department);
 
+        employeeDAO.getEmployeesByDepartmentId(department.getId());
+
 
         //Employee employeeFromDatabase = employeeDAO.getEmployeesByDepartmentId(employee.getDepartmentId());
         List<Employee> employeesByDepartment = employeeDAO.getEmployeesByDepartmentId(employee.getDepartmentId());
