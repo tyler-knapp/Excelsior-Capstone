@@ -44,9 +44,9 @@ public class JDBCProjectDAO implements ProjectDAO {
 
 	@Override
 	public void addEmployeeToProject(Long projectId, Long employeeId) {
-		String sql = "INSERT INTO project_employee (project_id, employee_id)" +
+		String sql = "INSERT INTO project_employee (project_id, employee_id) " +
 				"VALUES (?, ?) RETURNING project_id";
-		SqlRowSet rows = jdbcTemplate.queryForRowSet(sql, projectId,employeeId );
+		SqlRowSet rows = jdbcTemplate.queryForRowSet(sql, projectId, employeeId );
 		rows.next();
 
 	}
@@ -56,8 +56,6 @@ public class JDBCProjectDAO implements ProjectDAO {
 
 		project.setId(row.getLong("project_id"));
 		project.setName(row.getString("name"));
-//		project.setStartDate(row.getDate("from_date").toLocalDate());
-//		project.setEndDate(row.getDate("to_date").toLocalDate());
 
 		if (row.getDate("from_date") != null) {
 			project.setStartDate(row.getDate("from_date").toLocalDate());

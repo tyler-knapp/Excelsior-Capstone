@@ -144,8 +144,8 @@ public class JDBCProjectDAOIntegrationTest {
         return project;
     }
     private void createNewTestEmployee(Employee newEmployee) {
-        String sql = "INSERT INTO employee (first_name, last_name, birth_date, hire_date) VALUES ('testFirst', 'testLast', '20210615', '20210615') RETURNING employee_id";
-        SqlRowSet row = jdbcTemplate.queryForRowSet(sql);
+        String sql = "INSERT INTO employee (first_name, last_name, birth_date, hire_date) VALUES (?, ?, ?, ?) RETURNING employee_id";
+        SqlRowSet row = jdbcTemplate.queryForRowSet(sql, newEmployee.getFirstName(), newEmployee.getLastName(), newEmployee.getBirthDay(), newEmployee.getHireDate());
         row.next();
         newEmployee.setId(row.getLong("employee_id"));
     }
@@ -155,8 +155,8 @@ public class JDBCProjectDAOIntegrationTest {
         //employee.setId(employeeId);
         employee.setFirstName(firstName);
         employee.setLastName(lastName);
-        employee.setBirthDay(LocalDate.now());
-        employee.setHireDate(LocalDate.now());
+        employee.setBirthDay(LocalDate.of(2021,1, 1));
+        employee.setHireDate(LocalDate.of(2021, 1, 1));
         return employee;
     }
 
