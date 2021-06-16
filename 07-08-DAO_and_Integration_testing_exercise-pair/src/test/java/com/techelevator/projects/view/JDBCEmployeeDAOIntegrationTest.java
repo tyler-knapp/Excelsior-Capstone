@@ -56,23 +56,38 @@ public class JDBCEmployeeDAOIntegrationTest {
 
     @Test
     public void retrieve_all_employees(){
+        //Because we added department_id to getEmployee, we now need to set the department_id, by first creating
+        //it in our Department
+        Department department = getDepartment("TestDepartment");
+        createNewTestDepartment(department);
+
         List<Employee> originalList = employeeDAO.getAllEmployees();
         Employee employeeOne = getEmployee("testFirst", "testLast");
+        //Setting department_id for employeeOne
+        employeeOne.setDepartmentId(department.getId());
         Employee employeeTwo = getEmployee("testFirstTwo", "tesLastTwo");
+        //Setting department_id for employeeTwo
+        employeeTwo.setDepartmentId(department.getId());
         createNewTestEmployee(employeeOne);
         createNewTestEmployee(employeeTwo);
 
         List<Employee> employeesFromDatabase = employeeDAO.getAllEmployees();
 
         Assert.assertEquals(originalList.size() +2, employeesFromDatabase.size());
-
     }
 
     @Test
     public void retrieve_employees_by_name(){
         String testEmployeeFirstName = "testFirst";
         String testEmployeeLastName = "testLast";
+        //Because we added department_id to getEmployee, we now need to set the department_id, by first creating
+        //it in our Department
+        Department department = getDepartment("TestDepartment");
+        createNewTestDepartment(department);
+
         Employee newEmployee = new Employee();
+        //Setting department_id for newEmployee
+        newEmployee.setDepartmentId(department.getId());
         newEmployee.setFirstName(testEmployeeFirstName);
         newEmployee.setLastName(testEmployeeLastName);
         newEmployee.setBirthDay(LocalDate.of(2021,1,1));
@@ -91,16 +106,19 @@ public class JDBCEmployeeDAOIntegrationTest {
 
     @Test
     public void retrieve_employee_by_department_id(){
-        Employee employee = getEmployee("testFirst", "testLast");
-        createNewTestEmployee(employee);
+        //Employee employee = getEmployee("testFirst", "testLast");
+        //createNewTestEmployee(employee);
         Department department = getDepartment("TestDepartment");
         createNewTestDepartment(department);
 
+        Employee employee = getEmployee("testFirst", "testLast");
+        employee.setDepartmentId(department.getId());
+        createNewTestEmployee(employee);
 
         //Employee employeeFromDatabase = employeeDAO.getEmployeesByDepartmentId(employee.getDepartmentId());
         List<Employee> employeesByDepartment = employeeDAO.getEmployeesByDepartmentId(employee.getDepartmentId());
         Assert.assertNotNull("Employee by department was null", employeesByDepartment);
-        Assert.assertEquals("Employee by department not equal", employee , employeesByDepartment);
+        Assert.assertEquals("Employee by department not equal", employee, employeesByDepartment);
     }
 
     private Employee getEmployee(String firstName, String lastName) {
