@@ -2,6 +2,7 @@ package com.techelevator.projects.model.jdbc;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import javax.sql.DataSource;
 
@@ -33,12 +34,10 @@ public class JDBCDepartmentDAO implements DepartmentDAO {
 		return departments;
 	}
 
-
-	//Come back to this... Does this even make sense?
 	@Override
 	public List<Department> searchDepartmentsByName(String nameSearch) {
-		String sql = "SELECT department_id, name From department WHERE name = ?";
-		SqlRowSet rows = jdbcTemplate.queryForRowSet(sql, nameSearch);
+		String sql = "SELECT department_id, name From department WHERE name ILIKE ?";
+		SqlRowSet rows = jdbcTemplate.queryForRowSet(sql, "%" + nameSearch + "%");
 		List<Department> departments = new ArrayList<Department>();
 
 		while(rows.next()){

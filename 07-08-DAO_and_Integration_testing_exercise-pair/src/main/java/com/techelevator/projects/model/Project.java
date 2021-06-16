@@ -1,6 +1,7 @@
 package com.techelevator.projects.model;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class Project {
 	private Long id;
@@ -34,5 +35,18 @@ public class Project {
 	}
 	public String toString() {
 		return name;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Project project = (Project) o;
+		return Objects.equals(id, project.id) && Objects.equals(name, project.name) && Objects.equals(startDate, project.startDate) && Objects.equals(endDate, project.endDate);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, name, startDate, endDate);
 	}
 }
