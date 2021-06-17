@@ -63,19 +63,6 @@ public class JDBCProjectDAOIntegrationTest {
     }
 
     @Test
-    public void retrieve_all_projects() {
-        List<Project> originalList = projectDAO.getAllActiveProjects();
-        Project projectOne = getProject("tesName");
-        Project projectTwo = getProject("testName2");
-        createNewTestProject(projectOne);
-        createNewTestProject(projectTwo);
-
-        List<Project> projectsFromDatabase = projectDAO.getAllActiveProjects();
-
-        Assert.assertEquals(originalList.size() + 2, projectsFromDatabase.size());
-    }
-
-    @Test
     public void retrieve_all_active_projects() {
         List<Project> currentProject = projectDAO.getAllActiveProjects();
         LocalDate yesterday = LocalDate.now().minusDays(10);
