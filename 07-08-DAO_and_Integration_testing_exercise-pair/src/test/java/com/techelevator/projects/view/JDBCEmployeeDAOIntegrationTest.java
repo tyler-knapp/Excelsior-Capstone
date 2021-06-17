@@ -113,9 +113,15 @@ public class JDBCEmployeeDAOIntegrationTest {
         Department department = getDepartment("TestDepartment");
         createNewTestDepartment(department);
 
+<<<<<<< HEAD
+        employeeDAO.getEmployeesByDepartmentId(department.getId());
+
+        Employee employee = getEmployee("testFirst", "testLast");
+=======
         //employeeDAO.getEmployeesByDepartmentId(department.getId());
 
         Employee employee = getEmployeeByDepartment("testFirst", "testLast");
+>>>>>>> 49e0f9b969363e10707591b81f9453688e5d46c9
         //Need to set the department_id in Employee
         employee.setDepartmentId(department.getId());
         createNewTestEmployee(employee);
