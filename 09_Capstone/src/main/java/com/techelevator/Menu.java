@@ -16,13 +16,15 @@ public class Menu {
     }
 
     public String showListOfVenues(VenueDAO venueDAO) {
-        System.out.println("Which venue would you like to view?");
+        System.out.println("\nVENUE LIST");
         System.out.println("-----------------------------------");
+        System.out.println("Which venue would you like to view?");
         int count = 0;
         for(Venue venue: venueDAO.getAllVenues()) {
             count++;
             System.out.println(count + ") " + venue.toString());
         }
+        System.out.println("R) Return to Previous Screen");
         return in.nextLine();
     }
 }
