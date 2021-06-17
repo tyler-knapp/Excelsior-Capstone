@@ -36,12 +36,12 @@ public class JDBCVenueDAO implements VenueDAO {
 
     @Override
     public List<Venue> getVenueDetails() {
-        String sql = "SELECT  venue.id, venue.name AS venue_name, city.name AS city_name, state_abbreviation, category.name AS category_name, description FROM venue " +
+        //Updated statement to make categories into an aggregate in order to display them all
+        String sql = "SELECT  venue.id, venue.name AS venue_name, city.name AS city_name, state_abbreviation, STRING_AGG(category.name, ', ') AS categories, description FROM venue " +
                 "JOIN city ON venue.city_id = city.id " +
                 "LEFT JOIN category_venue ON venue.id = category_venue.venue_id " +
                 "LEFT JOIN category ON category_venue.category_id = category.id " +
-                //"WHERE venue.id = ? " +
-                "GROUP BY venue.id, city.name, state_abbreviation, category.name " +
+                "GROUP BY venue.id, city.name, state_abbreviation " +
                 "ORDER BY venue.name";
         SqlRowSet rows = jdbcTemplate.queryForRowSet(sql);
         List<Venue> venueDetails = new ArrayList<Venue>();
@@ -71,7 +71,7 @@ public class JDBCVenueDAO implements VenueDAO {
         venue.setName(row.getString("venue_name"));
         venue.setCity(row.getString("city_name"));
         venue.setState(row.getString("state_abbreviation"));
-        venue.setCategory(row.getString("category_name"));
+        venue.setCategory(row.getString("categories"));
         venue.setDescription(row.getString("description"));
 
         return venue;
