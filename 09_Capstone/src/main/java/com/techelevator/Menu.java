@@ -1,5 +1,6 @@
 package com.techelevator;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class Menu {
@@ -15,16 +16,22 @@ public class Menu {
         return in.nextLine();
     }
 
-    public String showListOfVenues(VenueDAO venueDAO) {
+    public String getVenueSelection(List<Venue> venues) {
         System.out.println("\nVENUE LIST");
         System.out.println("-----------------------------------");
         System.out.println("Which venue would you like to view?");
         int count = 0;
-        for(Venue venue: venueDAO.getAllVenues()) {
+        for(Venue venue: venues) {
             count++;
             System.out.println(count + ") " + venue.toString());
         }
         System.out.println("R) Return to Previous Screen");
         return in.nextLine();
+    }
+
+    public void showVenueDetails(Venue venue) {
+        System.out.println(venue.getName() + "\nLocation: " + venue.getCity() + ", " + venue.getState() +
+                "\nCategories: " + venue.getCategory() + "\n\n" + venue.getDescription());
+
     }
 }

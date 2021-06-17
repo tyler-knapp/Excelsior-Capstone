@@ -4,6 +4,8 @@ import javax.sql.DataSource;
 
 import org.apache.commons.dbcp2.BasicDataSource;
 
+import java.util.List;
+
 public class ExcelsiorCLI {
 
 	private static final String MAIN_MENU_DISPLAY_LIST_OF_VENUES = "1";
@@ -30,12 +32,19 @@ public class ExcelsiorCLI {
 
 	public void run() {
 		while(true) {
-			String choice = menu.getMainMenuSelection();
-			if(choice.equalsIgnoreCase(MAIN_MENU_QUIT)) {
+			String mainMenuChoice = menu.getMainMenuSelection();
+			if(mainMenuChoice.equalsIgnoreCase(MAIN_MENU_QUIT)) {
 				break;
 			}
-			else if(choice.equalsIgnoreCase(MAIN_MENU_DISPLAY_LIST_OF_VENUES)) {
-				menu.showListOfVenues(venueDAO);
+			else if(mainMenuChoice.equalsIgnoreCase(MAIN_MENU_DISPLAY_LIST_OF_VENUES)) {
+				//Get a list of venues to display in the Venue Selection Menu
+				List<Venue> venues = venueDAO.getVenueDetails();
+				String venueMenuChoice = menu.getVenueSelection(venues);
+				//Creating an index from the user input to get the details of a specific venue
+				int venueIndex = Integer.parseInt(venueMenuChoice) - 1;
+				Venue venue = venues.get(venueIndex);
+				menu.showVenueDetails(venue);
+
 			}
 		}
 		//Please remove and add to menu
