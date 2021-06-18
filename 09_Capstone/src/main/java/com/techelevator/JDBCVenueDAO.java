@@ -17,25 +17,12 @@ public class JDBCVenueDAO implements VenueDAO {
     }
 
     @Override
-    public List<Venue> getAllVenues() {
-        String sql = "SELECT id, name, city_id, description FROM venue GROUP BY id ORDER BY name";
-        SqlRowSet rows = jdbcTemplate.queryForRowSet(sql);
-        List<Venue> venues = new ArrayList<Venue>();
-
-        while(rows.next()) {
-            Venue venue = mapRowToVenue(rows);
-            venues.add(venue);
-        }
-        return venues;
-    }
-
-    @Override
     public Venue getVenueById(Long id) {
         return null;
     }
 
     @Override
-    public List<Venue> getVenueDetails() {
+    public List<Venue> getAllVenues() {
         //Updated statement to make categories into an aggregate in order to display them all
         String sql = "SELECT  venue.id, venue.name AS venue_name, city.name AS city_name, state_abbreviation, STRING_AGG(category.name, ', ') AS categories, description FROM venue " +
                 "JOIN city ON venue.city_id = city.id " +
@@ -47,7 +34,7 @@ public class JDBCVenueDAO implements VenueDAO {
         List<Venue> venueDetails = new ArrayList<Venue>();
 
         while (rows.next()) {
-            Venue venue = mapRowToVenueDetails(rows);
+            Venue venue = mapRowToVenue(rows);
             venueDetails.add(venue);
         }
         return venueDetails;
@@ -57,22 +44,16 @@ public class JDBCVenueDAO implements VenueDAO {
         Venue venue = new Venue();
 
         venue.setId(row.getLong("id"));
-        venue.setName(row.getString("name"));
-        venue.setCity_id(row.getLong("city_id"));
-        venue.setDescription(row.getString("description"));
-
-        return venue;
-    }
-
-    private Venue mapRowToVenueDetails(SqlRowSet row) {
-        Venue venue = new Venue();
-
-        venue.setId(row.getLong("id"));
         venue.setName(row.getString("venue_name"));
         venue.setCity(row.getString("city_name"));
         venue.setState(row.getString("state_abbreviation"));
-        venue.setCategory(row.getString("categories"));
         venue.setDescription(row.getString("description"));
+
+        if(row.getString("categories") == null ) {
+            venue.setCategory("NA");
+        } else {
+        venue.setCategory(row.getString("categories"));
+        }
 
         return venue;
 
