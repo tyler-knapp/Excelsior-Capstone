@@ -2,8 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/../../tylerknapp-java-blue/module-1/13_Inheritance_Abstract_Classes/lecture-final/m01d13-inheritance-part2-lecture-final.iml" filepath="$PROJECT_DIR$/../../tylerknapp-java-blue/module-1/13_Inheritance_Abstract_Classes/lecture-final/m01d13-inheritance-part2-lecture-final.iml" />
       <module fileurl="file://$PROJECT_DIR$/m02d07-dao-exercises-pair.iml" filepath="$PROJECT_DIR$/m02d07-dao-exercises-pair.iml" />
       <module fileurl="file://$PROJECT_DIR$/../../tylerknapp-java-blue/module-2/07_Database_Connectivity_DAO/lecture-final/m02d07-dao-lecture-final.iml" filepath="$PROJECT_DIR$/../../tylerknapp-java-blue/module-2/07_Database_Connectivity_DAO/lecture-final/m02d07-dao-lecture-final.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../team7-java-blue-week04-pair-exercises/m1-capstone-java-cateringsystem/m1-java-capstone-catering-system.iml" filepath="$PROJECT_DIR$/../../team7-java-blue-week04-pair-exercises/m1-capstone-java-cateringsystem/m1-java-capstone-catering-system.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../09_Capstone/m2-capstone-excelsior-venues.iml" filepath="$PROJECT_DIR$/../09_Capstone/m2-capstone-excelsior-venues.iml" />
     </modules>
   </component>
 </project>
