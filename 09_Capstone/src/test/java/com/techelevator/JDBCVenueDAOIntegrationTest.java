@@ -55,9 +55,9 @@ public class JDBCVenueDAOIntegrationTest extends DAOIntegrationTest {
     public void retrieve_all_venues(){
         List<Venue> originalList = venueDAO.getAllVenues();
         Venue venueOne = new Venue();
-        //createNewTestVenue(venueOne);
+        createNewTestVenue(venueOne);
 
-        originalList.add(venueOne);
+        //originalList.add(venueOne);
 
         //TEST
         List<Venue> venueFromDataBase = venueDAO.getAllVenues();

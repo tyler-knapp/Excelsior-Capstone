@@ -63,9 +63,11 @@ public class ExcelsiorCLI {
 					try {
 						venueIndex = Integer.parseInt(venueMenuChoice) - 1;
 					} catch (NumberFormatException e) {
-						//menu.showInvalidSelectionMessage();
+						menu.showInvalidSelectionMessage();
 						continue;
 					}
+
+
 
 					Venue venue = venues.get(venueIndex);
 					menu.showVenueDetails(venue);
