@@ -16,10 +16,18 @@ public class JDBCVenueDAO implements VenueDAO {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
-    @Override
-    public Venue getVenueById(Long id) {
-        return null;
-    }
+    //Maybe
+//    @Override
+//    public Venue getVenueById(Long id) {
+//        String sql = "SELECT id, name From venue WHERE id = ?";
+//        SqlRowSet rows = jdbcTemplate.queryForRowSet(sql, id);
+//
+//        Venue venue = null;
+//        if(rows.next()){
+//            venue = mapRowToVenue(rows);
+//        }
+//        return venue;
+//    }
 
     @Override
     public List<Venue> getAllVenues() {
@@ -31,13 +39,13 @@ public class JDBCVenueDAO implements VenueDAO {
                 "GROUP BY venue.id, city.name, state_abbreviation " +
                 "ORDER BY venue.name";
         SqlRowSet rows = jdbcTemplate.queryForRowSet(sql);
-        List<Venue> venueDetails = new ArrayList<Venue>();
+        List<Venue> venues = new ArrayList<Venue>();
 
         while (rows.next()) {
             Venue venue = mapRowToVenue(rows);
-            venueDetails.add(venue);
+            venues.add(venue);
         }
-        return venueDetails;
+        return venues;
     }
 
     private Venue mapRowToVenue(SqlRowSet row) {

@@ -14,6 +14,8 @@ public class ExcelsiorCLI {
 
 	private Menu menu;
 	private VenueDAO venueDAO;
+	private SpaceDAO spaceDAO;
+	//private ReservationDAO reservationDAO;
 
 	public static void main(String[] args) {
 		BasicDataSource dataSource = new BasicDataSource();
@@ -28,6 +30,7 @@ public class ExcelsiorCLI {
 	//DataSource was passed in an argument from original code
 	public ExcelsiorCLI(DataSource datasource) {
 		venueDAO = new JDBCVenueDAO(datasource);
+		spaceDAO = new JDBCSpaceDAO(datasource);
 		this.menu = new Menu();
 	}
 
@@ -38,13 +41,6 @@ public class ExcelsiorCLI {
 				break;
 			}
 			else if(mainMenuChoice.equalsIgnoreCase(MAIN_MENU_DISPLAY_LIST_OF_VENUES)) {
-//				//Get a list of venues to display in the Venue Selection Menu
-//				List<Venue> venues = venueDAO.getAllVenues();
-//				String venueMenuChoice = menu.getVenueSelection(venues);
-//				//Creating an index from the user input to get the details of a specific venue
-//				int venueIndex = Integer.parseInt(venueMenuChoice) - 1;
-//				Venue venue = venues.get(venueIndex);
-//				menu.showVenueDetails(venue);
 				while(true) {
 					//Get a list of venues to display in the Venue Selection Menu
 					List<Venue> venues = venueDAO.getAllVenues();
@@ -63,10 +59,9 @@ public class ExcelsiorCLI {
 					try {
 						venueIndex = Integer.parseInt(venueMenuChoice) - 1;
 					} catch (NumberFormatException e) {
-						//menu.showInvalidSelectionMessage();
+						menu.showInvalidSelectionMessage();
 						continue;
 					}
-
 					Venue venue = venues.get(venueIndex);
 					menu.showVenueDetails(venue);
 
@@ -75,6 +70,8 @@ public class ExcelsiorCLI {
 						if (venueSubMenuChoice.equalsIgnoreCase(RETURN_TO_PREVIOUS_MENU)) {
 							break;
 						}
+						List<Space> spaces = spaceDAO.getAllSpaces();
+						menu.getSpaceSelection(spaces);
 					}
 				}
 			}
