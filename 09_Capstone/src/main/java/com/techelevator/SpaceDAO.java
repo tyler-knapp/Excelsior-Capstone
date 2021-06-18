@@ -6,7 +6,7 @@ public interface SpaceDAO {
 
     public List<Space> getAllSpaces();
 
-    public List<Space> getSpaceById(long id);
+    public List<Space> getSpaceByVenueId(long venueId);
 
     public List<Space> getSpaceByName(String name);
 

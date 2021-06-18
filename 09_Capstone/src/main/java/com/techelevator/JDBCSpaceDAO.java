@@ -32,8 +32,16 @@ public class JDBCSpaceDAO implements SpaceDAO {
     }
 
     @Override
-    public List<Space> getSpaceById(long id) {
-        return null;
+    public List<Space> getSpaceByVenueId(long id) {
+        String sql = "SELECT id, venue_id, name, is_accessible, open_from, open_to, daily_rate, max_occupancy FROM space WHERE venue_id = ?";
+        SqlRowSet rows = jdbcTemplate.queryForRowSet(sql);
+        List<Space> spacesByVenueId = new ArrayList<Space>();
+
+        while(rows.next()){
+            Space space = mapRowToSpace(rows);
+            spacesByVenueId.add(space);
+        }
+        return spacesByVenueId;
     }
 
     @Override

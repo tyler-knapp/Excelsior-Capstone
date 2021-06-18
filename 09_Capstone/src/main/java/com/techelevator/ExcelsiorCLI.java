@@ -62,7 +62,6 @@ public class ExcelsiorCLI {
 						menu.showInvalidSelectionMessage();
 						continue;
 					}
-
 					Venue venue = venues.get(venueIndex);
 					menu.showVenueDetails(venue);
 
@@ -71,8 +70,9 @@ public class ExcelsiorCLI {
 						if (venueSubMenuChoice.equalsIgnoreCase(RETURN_TO_PREVIOUS_MENU)) {
 							break;
 						}
-						List<Space> spaces = spaceDAO.getAllSpaces();
-						menu.getSpaceSelection(spaces);
+						String venueSelectionForSpaces = menu.getVenueSelection(venues);
+						//List<Space> spaces = spaceDAO.getSpaceByVenueId();
+						//menu.getSpaceSelection(spaces);
 					}
 				}
 			}
