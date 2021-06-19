@@ -71,7 +71,8 @@ public class JDBCSpaceDAO implements SpaceDAO {
                 "        WHERE (start_date > ? AND end_date < ?) " +
                 "        GROUP BY space_id " +
                 ") AS space_reservation_count ON space_reservation_count.space_id = space.id " +
-                "WHERE space.max_occupancy > ? AND (open_from IS NULL OR open_from >= ?) AND (open_to IS NULL OR open_to <= ?) AND number_of_reservations IS NULL AND space.venue_id = ?";
+                "WHERE space.max_occupancy > ? AND (open_from IS NULL OR open_from >= ?) AND (open_to IS NULL OR open_to <= ?) AND number_of_reservations IS NULL AND space.venue_id = ? " +
+                "LIMIT 5";
         SqlRowSet rows = jdbcTemplate.queryForRowSet(sql, startDate, endDate, numberOfAttendees, startMonth, endMonth, venue.getId());
         List<Space> spacesByAvailability = new ArrayList<Space>();
 

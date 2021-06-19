@@ -13,6 +13,7 @@ public class ExcelsiorCLI {
 	private static final String VENUE_MENU_SEARCH_FOR_RESERVATION = "2";
 	private static final String MAIN_MENU_QUIT = "Q";
 	private static final String RETURN_TO_PREVIOUS_MENU = "R";
+	private static final String CANCEL_RESERVATION_SEARCH = "0";
 
 	private Menu menu;
 	private VenueDAO venueDAO;
@@ -29,7 +30,6 @@ public class ExcelsiorCLI {
 		application.run();
 	}
 
-	//DataSource was passed in an argument from original code
 	public ExcelsiorCLI(DataSource datasource) {
 		venueDAO = new JDBCVenueDAO(datasource);
 		spaceDAO = new JDBCSpaceDAO(datasource);
@@ -38,50 +38,71 @@ public class ExcelsiorCLI {
 
 	public void run() {
 		while(true) {
+			//Display main menu to user
 			String mainMenuChoice = menu.getMainMenuSelection();
+			//If user enters "Q", quit application
 			if(mainMenuChoice.equalsIgnoreCase(MAIN_MENU_QUIT)) {
 				break;
 			}
+			//If user enters "1", display all venues
 			else if(mainMenuChoice.equalsIgnoreCase(MAIN_MENU_DISPLAY_LIST_OF_VENUES)) {
 				while(true) {
 					//Get a list of venues to display in the Venue Selection Menu
 					List<Venue> venues = venueDAO.getAllVenues();
 					String venueMenuChoice = menu.getVenueSelection(venues);
-					//if statement was included to make sure that a user enters a value and not an empty string
+					//The if statement below was included to make sure that a user enters a value and not an empty string
 					//otherwise, a exception will occur
 					if(venueMenuChoice.equalsIgnoreCase("")) {
 						continue;
 					}
 					//Moved this above venueIndex to avoid the input being parsed into an int
+					//If user enters "R", return to the previous screen
 					if(venueMenuChoice.equalsIgnoreCase(RETURN_TO_PREVIOUS_MENU)) {
 						break;
 					}
 					//Creating an index from the user input to get the details of a specific venue
 					int venueIndex;
 					try {
+						//Parsing the user's selection and subtracting 1 to get the index of the venue they want details on
 						venueIndex = Integer.parseInt(venueMenuChoice) - 1;
+					//Catching NumberFormatException and displaying error message
 					} catch (NumberFormatException e) {
 						menu.showInvalidSelectionMessage();
 						continue;
 					}
+					//Display venue details to the user
 					Venue venue = venues.get(venueIndex);
 					menu.showVenueDetails(venue);
 
 					while(true) {
+						//Display the venue sub menu and get user selection
 						String venueSubMenuChoice = menu.getSelectionFromVenueListSubMenu();
+						//If user enters "R", return to previous screen
 						if (venueSubMenuChoice.equalsIgnoreCase(RETURN_TO_PREVIOUS_MENU)) {
 							break;
-						}else if (venueSubMenuChoice.equalsIgnoreCase(VENUE_MENU_SEARCH_FOR_RESERVATION)){
+						//If user enters "2", prompt user for information to check available spaces based on venue selection
+						} else if (venueSubMenuChoice.equalsIgnoreCase(VENUE_MENU_SEARCH_FOR_RESERVATION)) {
+							//Ask user for starting date they require space
 							LocalDate startDate = menu.getStartDateFromUser();
+							//Ask user for number of days they require space
 							int numberOfDays = menu.getNumberOfDAysFromUser();
+							//Ask user for number of attendees
 							int numberOfAttendees = menu.getNumberOfAttendeesFromUser();
+							//Display a list of all available spaces based on user input
 							List<Space> spaces = spaceDAO.getSpaceAvailability(startDate, numberOfDays, numberOfAttendees, venue);
 							menu.showAllAvailableSpaces(spaces, numberOfDays);
+							//Ask user if they would like to reserve a space from the list provided above
+							String searchReservationChoice = menu.getSpaceReservation();
+							if(searchReservationChoice.equalsIgnoreCase(CANCEL_RESERVATION_SEARCH)) {
+								break;
+							}
 						}
+						//Display list of venue spaces based on user venue selection
 						menu.getVenueSpaceHeader(venue);
 						List<Space> spaces = spaceDAO.getSpaceByVenueId(venue.getId());
-						while(true){
+						while(true) {
 							menu.showSpaceSelection(spaces);
+							//If user enters "R", return to previous screen
 							String spaceSubMenuChoice = menu.getSelectionFromSpaceListSubMenu();
 							if(spaceSubMenuChoice.equalsIgnoreCase(RETURN_TO_PREVIOUS_MENU)){
 								menu.showVenueDetails(venue);
