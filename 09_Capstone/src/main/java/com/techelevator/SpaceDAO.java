@@ -11,5 +11,5 @@ public interface SpaceDAO {
 
     public List<Space> getSpaceByName(String name);
 
-    public List<Space> getSpaceAvailability();
+    public List<Space> getSpaceAvailability(LocalDate startDate, int numberOfDays, int numberOfAttendees, Venue venue);
 }

@@ -4,6 +4,7 @@ import javax.sql.DataSource;
 
 import org.apache.commons.dbcp2.BasicDataSource;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class ExcelsiorCLI {
@@ -71,10 +72,11 @@ public class ExcelsiorCLI {
 						if (venueSubMenuChoice.equalsIgnoreCase(RETURN_TO_PREVIOUS_MENU)) {
 							break;
 						}else if (venueSubMenuChoice.equalsIgnoreCase(VENUE_MENU_SEARCH_FOR_RESERVATION)){
-							menu.getStartDateFromUser();
-							menu.getNumberOfDAysFromUser();
-							menu.getNumberOfAttendeesFromUser();
-							//menu.showAllAvailableSpaces();
+							LocalDate startDate = menu.getStartDateFromUser();
+							int numberOfDays = menu.getNumberOfDAysFromUser();
+							int numberOfAttendees = menu.getNumberOfAttendeesFromUser();
+							List<Space> spaces = spaceDAO.getSpaceAvailability(startDate, numberOfDays, numberOfAttendees, venue);
+							menu.showAllAvailableSpaces(spaces, numberOfDays);
 						}
 						menu.getVenueSpaceHeader(venue);
 						List<Space> spaces = spaceDAO.getSpaceByVenueId(venue.getId());

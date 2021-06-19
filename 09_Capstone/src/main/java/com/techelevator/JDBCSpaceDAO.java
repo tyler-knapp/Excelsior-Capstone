@@ -53,24 +53,26 @@ public class JDBCSpaceDAO implements SpaceDAO {
     }
 
     @Override
-    public List<Space> getSpaceAvailability() {
+    public List<Space> getSpaceAvailability(LocalDate startDate, int numberOfDays, int numberOfAttendees, Venue venue) {
 //        String userDateAsAString = menu.getStartDateFromUser();
 //        LocalDate dateAsALocalDate = LocalDate.parse(userDateAsAString); // 2021/06/21
 //        String[] dateAsAnArray = userDateAsAString.split("/");
 //        String month = dateAsAnArray[1];
 //        int monthAsAnInt = Integer.parseInt(month);
-
-        String sql = "SELECT venue.name AS venue_name, space.name AS space_name, coalesce(space_reservation_count.number_of_reservations, 0) AS number_of_reservations, space.max_occupancy, space.open_from, space.open_to" +
-                "FROM venue" +
-                "LEFT JOIN space ON venue.id = space.venue_id" +
+        LocalDate endDate = startDate.plusDays(numberOfDays);
+        int startMonth = startDate.getMonth().getValue();
+        int endMonth = endDate.getMonth().getValue();
+        String sql = "SELECT space.id, venue.name AS venue_name, space.name AS space_name, coalesce(space_reservation_count.number_of_reservations, 0) AS number_of_reservations, space.max_occupancy, space.open_from, space.open_to, CAST(space.daily_rate AS DECIMAL(10,2)) " +
+                "FROM venue " +
+                "LEFT JOIN space ON venue.id = space.venue_id " +
                 "LEFT JOIN (" +
-                "        SELECT count(*) AS number_of_reservations, space_id" +
-                "        from reservation" +
-                "        WHERE (start_date > ? AND end_date < ?)" +
-                "        GROUP BY space_id" +
-                ") AS space_reservation_count ON space_reservation_count.space_id = space.id" +
-                "WHERE space.max_occupancy > ? AND (open_from IS NULL OR open_from >= ?) AND (open_to IS NULL OR open_to <= ?) AND number_of_reservations IS NULL";
-        SqlRowSet rows = jdbcTemplate.queryForRowSet(sql);
+                "        SELECT count(*) AS number_of_reservations, space_id " +
+                "        from reservation " +
+                "        WHERE (start_date > ? AND end_date < ?) " +
+                "        GROUP BY space_id " +
+                ") AS space_reservation_count ON space_reservation_count.space_id = space.id " +
+                "WHERE space.max_occupancy > ? AND (open_from IS NULL OR open_from >= ?) AND (open_to IS NULL OR open_to <= ?) AND number_of_reservations IS NULL AND space.venue_id = ?";
+        SqlRowSet rows = jdbcTemplate.queryForRowSet(sql, startDate, endDate, numberOfAttendees, startMonth, endMonth, venue.getId());
         List<Space> spacesByAvailability = new ArrayList<Space>();
 
         while(rows.next()){
@@ -100,10 +102,12 @@ public class JDBCSpaceDAO implements SpaceDAO {
 
     private Space mapRowToSpaceAvailability(SqlRowSet row) {
         Space space = new Space();
+        space.setId(row.getLong("id"));
         space.setVenueName(row.getString("venue_name"));
         space.setName(row.getString("space_name"));
         space.setNumberOfReservations(row.getInt("number_of_reservations"));
         space.setMaxOccupancy(row.getLong("max_occupancy"));
+        space.setDailyRate(row.getBigDecimal("daily_rate"));
 
         if (row.getInt("open_to") != 0) {
             space.setOpenTo(row.getInt("open_to"));
@@ -111,7 +115,6 @@ public class JDBCSpaceDAO implements SpaceDAO {
         if (row.getInt("open_from") != 0) {
             space.setOpenFrom(row.getInt("open_from"));
         }
-
         return space;
     }
 
