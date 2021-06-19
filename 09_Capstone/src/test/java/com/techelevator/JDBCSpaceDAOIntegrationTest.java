@@ -37,6 +37,11 @@ public class JDBCSpaceDAOIntegrationTest extends DAOIntegrationTest {
         Assert.assertTrue(isSpaceInList(space, spacesInVenue));
     }
 
+    @Test
+    public void retrieve_space_availability() {
+
+    }
+
     private Boolean isSpaceInList(Space space, List<Space> spaces) {
         for(Space spaceToCheck: spaces) {
             if (spaceToCheck.equals(space)) {

@@ -129,9 +129,12 @@ public class Menu {
         return in.nextLine();
     }
 
-    public void showConfirmationDetails() {
+    public void showConfirmationDetails(Reservation reservation, Venue venue, Space space, int numberOfDays) {
         System.out.println("\nThanks for submitting your reservation! The details for your event is listed below: ");
-        System.out.println("\nConfirmation #: ");
+        System.out.println("\nConfirmation #: " + reservation.getReservationId() + "\n" + "Venue: " + venue.getName() + "\n" +
+                "Space: " + space.getName() + "\n" + "Reserved For: " + reservation.getReservedFor() + "\n" +
+                "Attendees: " + reservation.getNumberOfAttendees() + "\n" + "Arrival Date: " + reservation.getStartDate() +
+                "\n" + "Depart Date: " + reservation.getEndDate() + "\n" + "Total Cost: " + (space.getDailyRate().intValue() * numberOfDays));
     }
 
 }

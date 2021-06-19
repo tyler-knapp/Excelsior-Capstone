@@ -6,7 +6,4 @@ public interface VenueDAO {
 
     public List<Venue> getAllVenues();
 
-    //public Venue getVenueById(Long id);
-
-
 }

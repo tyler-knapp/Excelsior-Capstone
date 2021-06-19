@@ -34,6 +34,18 @@ public class JDBCSpaceDAO implements SpaceDAO {
     }
 
     @Override
+    public Space getSpaceBySpaceId(long spaceId) {
+        String sql = "SELECT id, venue_id, name, is_accessible, open_from, open_to, CAST(daily_rate AS DECIMAL(10,2)), max_occupancy FROM space WHERE id = ?";
+        SqlRowSet rows = jdbcTemplate.queryForRowSet(sql, spaceId);
+
+        Space space = null;
+        if(rows.next()) {
+            space = mapRowToSpace(rows);
+        }
+        return space;
+    }
+
+    @Override
     public List<Space> getSpaceAvailability(LocalDate startDate, int numberOfDays, int numberOfAttendees, Venue venue) {
 //        String userDateAsAString = menu.getStartDateFromUser();
 //        LocalDate dateAsALocalDate = LocalDate.parse(userDateAsAString); // 2021/06/21

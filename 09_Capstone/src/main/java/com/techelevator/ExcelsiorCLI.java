@@ -21,7 +21,7 @@ public class ExcelsiorCLI {
 	private Menu menu;
 	private VenueDAO venueDAO;
 	private SpaceDAO spaceDAO;
-	//private ReservationDAO reservationDAO;
+	private ReservationDAO reservationDAO;
 
 	public static void main(String[] args) {
 		BasicDataSource dataSource = new BasicDataSource();
@@ -36,6 +36,7 @@ public class ExcelsiorCLI {
 	public ExcelsiorCLI(DataSource datasource) {
 		venueDAO = new JDBCVenueDAO(datasource);
 		spaceDAO = new JDBCSpaceDAO(datasource);
+		reservationDAO = new JDBCReservationDAO(datasource);
 		this.menu = new Menu();
 	}
 
@@ -121,9 +122,23 @@ public class ExcelsiorCLI {
 								menu.showAllAvailableSpaces(availableSpaces, numberOfDays);
 								//Ask user if they would like to reserve a space from the list provided above
 								String searchReservationChoice = menu.getSpaceReservation();
+
 								if (searchReservationChoice.equalsIgnoreCase(CANCEL_RESERVATION_SEARCH)) {
 									menu.showVenueDetails(venue);
 									break;
+								}
+								while (true) {
+									String reservationName = menu.getNameForReservation();
+
+									Space space = spaceDAO.getSpaceBySpaceId(Integer.parseInt(searchReservationChoice));
+									Reservation newReservation = new Reservation();
+									newReservation.setSpaceId(Long.parseLong(searchReservationChoice));
+									newReservation.setStartDate(startDate);
+									newReservation.setEndDate(startDate.plusDays(numberOfDays));
+									newReservation.setNumberOfAttendees(numberOfAttendees);
+									newReservation.setReservedFor(reservationName);
+									newReservation = reservationDAO.createNewReservation(newReservation);
+									menu.showConfirmationDetails(newReservation, venue, space, numberOfDays);
 								}
 							}
 						}
