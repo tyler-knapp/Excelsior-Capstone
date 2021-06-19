@@ -9,6 +9,7 @@ import java.util.List;
 public class ExcelsiorCLI {
 
 	private static final String MAIN_MENU_DISPLAY_LIST_OF_VENUES = "1";
+	private static final String VENUE_MENU_SEARCH_FOR_RESERVATION = "2";
 	private static final String MAIN_MENU_QUIT = "Q";
 	private static final String RETURN_TO_PREVIOUS_MENU = "R";
 
@@ -69,10 +70,22 @@ public class ExcelsiorCLI {
 						String venueSubMenuChoice = menu.getSelectionFromVenueListSubMenu();
 						if (venueSubMenuChoice.equalsIgnoreCase(RETURN_TO_PREVIOUS_MENU)) {
 							break;
+						}else if (venueSubMenuChoice.equalsIgnoreCase(VENUE_MENU_SEARCH_FOR_RESERVATION)){
+							menu.getStartDateFromUser();
+							menu.getNumberOfDAysFromUser();
+							menu.getNumberOfAttendeesFromUser();
+							//menu.showAllAvailableSpaces();
 						}
-						String venueSelectionForSpaces = menu.getVenueSelection(venues);
-						//List<Space> spaces = spaceDAO.getSpaceByVenueId();
-						//menu.getSpaceSelection(spaces);
+						menu.getVenueSpaceHeader(venue);
+						List<Space> spaces = spaceDAO.getSpaceByVenueId(venue.getId());
+						while(true){
+							menu.showSpaceSelection(spaces);
+							String spaceSubMenuChoice = menu.getSelectionFromSpaceListSubMenu();
+							if(spaceSubMenuChoice.equalsIgnoreCase(RETURN_TO_PREVIOUS_MENU)){
+								menu.showVenueDetails(venue);
+								break;
+							}
+						}
 					}
 				}
 			}

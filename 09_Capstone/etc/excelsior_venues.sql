@@ -1,4 +1,51 @@
+;
+
+SELECT 
+
 START TRANSACTION;
+
+SELECT id, venue_id, name, is_accessible, open_from, open_to, CAST(daily_rate AS DECIMAL(10,2)), max_occupancy, start_date, end_date
+FROM space 
+LEFT JOIN reservation ON space.id = reservation.space_id
+WHERE (open_from IS NULL OR open_from >= ?) AND (open_to IS NULL OR open_to <= ?) AND (max_occupancy >= ?) AND (NOT Between(start_date < ? AND end_date > ?));
+
+
+SELECT count(*) AS number_of_reservation, space_id, space.name
+from reservation
+LEFT JOIN space ON space.id = reservation.space_id
+WHERE (start_date > ? AND end_date < ?)
+AND space_id = 1
+GROUP BY space_id, space.name;
+
+
+
+
+
+
+
+SELECT id, venue_id, name, is_accessible, open_from, open_to, daily_rate, max_occupancy FROM space WHERE venue_id = ?;
+SELECT venue.name AS venue_name, space.name AS space_name, space_reservation_count.number_of_reservations
+FROM venue
+LEFT JOIN space ON venue.id = space.venue_id
+LEFT JOIN (
+        SELECT count(*) AS number_of_reservations, space_id
+        from reservation
+        WHERE (start_date > ? AND end_date < ?)
+        GROUP BY space_id
+) AS space_reservation_count ON space_reservation_count.space_id = space.id
+WHERE number_of_reservations IS NULL;
+SELECT id, venue_id, name, is_accessible, open_from, open_to, daily_rate, max_occupancy FROM space WHERE venue_id = 14;
+
+SELECT CAST(daily_rate AS DECIMAL(10,2)) FROM space;
+
+SELECT  venue.id, venue.name AS venue_name, city.name AS city_name, state_abbreviation, STRING_AGG(category.name, ', ') AS categories, description, space.id, space.name 
+FROM venue
+JOIN city ON venue.city_id = city.id
+LEFT JOIN category_venue ON venue.id = category_venue.venue_id
+LEFT JOIN category ON category_venue.category_id = category.id
+JOIN space ON venue.id = space.venue_id
+GROUP BY venue.id, city.name, state_abbreviation, space.id, space.name
+ORDER BY venue.name;
 
 DROP TABLE IF EXISTS category_venue;
 DROP TABLE IF EXISTS category;

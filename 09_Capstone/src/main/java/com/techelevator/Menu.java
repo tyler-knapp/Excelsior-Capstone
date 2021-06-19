@@ -1,5 +1,6 @@
 package com.techelevator;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Scanner;
 import java.text.DateFormatSymbols;
@@ -52,7 +53,7 @@ public class Menu {
 
     }
 
-    public void getSpaceSelection(List<Space> spaces){
+    public void showSpaceSelection(List<Space> spaces){
         System.out.println("Name " + "Open " + "Close " + "Daily Rate " + "Max. Occupancy");
         int count = 0;
 
@@ -74,4 +75,38 @@ public class Menu {
     public void showInvalidSelectionMessage() {
         System.out.println("\nInvalid selection, please try again.");
     }
+
+    public String getSelectionFromSpaceListSubMenu (){
+        System.out.println("\nWhat would you like to do next?");
+        System.out.println("1) Reserve a Space\nR) Return to Previous Screen");
+        return in.nextLine();
+    }
+
+    public String getStartDateFromUser(){
+        System.out.println("\nWhen do you need this space?");
+        return in.nextLine();
+    }
+
+    public int getNumberOfDAysFromUser(){
+        System.out.println("\nHow many days will you need the space?");
+        return Integer.parseInt(in.nextLine());
+    }
+
+    public String getNumberOfAttendeesFromUser(){
+        System.out.println("\nHow many people will be in attendance?");
+        return in.nextLine();
+    }
+
+    public void showAllAvailableSpaces(List<Space> spaces){
+
+        System.out.println("\nThe following spaces are available based on your needs: ");
+        System.out.println("\nSpace # " + "Name " + "Daily Rate " + "Max Occup. " + "Accessible? " + "Total Cost " );
+
+        for(Space space : spaces){
+            //if()
+            }
+        //System.out.println("\n" + space.getId() + space.getName() + space.getDailyRate() + space.getMaxOccupancy() + space.isAccessible() + (space.getDailyRate().intValue() * getNumberOfDAysFromUser()));
+    }
+
+
 }

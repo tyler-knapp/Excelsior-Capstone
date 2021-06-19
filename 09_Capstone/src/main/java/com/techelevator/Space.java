@@ -16,6 +16,25 @@ public class Space {
     private BigDecimal dailyRate;
     private long maxOccupancy;
 
+    private String venueName;
+    private int numberOfReservations;
+
+    public String getVenueName() {
+        return venueName;
+    }
+
+    public void setVenueName(String venueName) {
+        this.venueName = venueName;
+    }
+
+    public int getNumberOfReservations() {
+        return numberOfReservations;
+    }
+
+    public void setNumberOfReservations(int numberOfReservations) {
+        this.numberOfReservations = numberOfReservations;
+    }
+
     public long getId() {
         return id;
     }
@@ -85,7 +104,7 @@ public class Space {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Space space = (Space) o;
-        return id == space.id && venueId == space.venueId && isAccessible == space.isAccessible && maxOccupancy == space.maxOccupancy && Objects.equals(name, space.name) && Objects.equals(openFrom, space.openFrom) && Objects.equals(openTo, space.openTo) && Objects.equals(dailyRate, space.dailyRate);
+        return id == space.id && venueId == space.venueId && isAccessible == space.isAccessible && openFrom == space.openFrom && openTo == space.openTo && maxOccupancy == space.maxOccupancy && Objects.equals(name, space.name) && Objects.equals(dailyRate, space.dailyRate);
     }
 
     @Override
