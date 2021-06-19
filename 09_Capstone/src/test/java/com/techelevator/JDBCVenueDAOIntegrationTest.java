@@ -2,11 +2,8 @@ package com.techelevator;
 
 import org.junit.*;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 
-import javax.sql.DataSource;
-import java.sql.SQLException;
 import java.util.List;
 
 public class JDBCVenueDAOIntegrationTest extends DAOIntegrationTest{
@@ -27,8 +24,8 @@ public class JDBCVenueDAOIntegrationTest extends DAOIntegrationTest{
         List<Venue> originalList = venueDAO.getAllVenues();
         Venue venueOne = getVenue(1, "test");
         Venue venueTwo = getVenue(2,"Test2");
-        insertNewTestVenue(venueOne);
-        insertNewTestVenue(venueTwo);
+        createNewTestVenue(venueOne);
+        createNewTestVenue(venueTwo);
 
         //TEST
         List<Venue> venueFromDataBase = venueDAO.getAllVenues();
@@ -36,7 +33,7 @@ public class JDBCVenueDAOIntegrationTest extends DAOIntegrationTest{
         Assert.assertEquals(originalList.size() + 2 , venueFromDataBase.size());
     }
 
-    private void insertNewTestVenue(Venue venue){
+    private void createNewTestVenue(Venue venue){
     String sql = "INSERT INTO venue (id, name, city_id, description)" +
             "VALUES(DEFAULT,?,?,?) RETURNING id";
         SqlRowSet rowSet = jdbcTemplate.queryForRowSet(sql, venue.getName(), venue.getCity_id(), venue.getDescription());

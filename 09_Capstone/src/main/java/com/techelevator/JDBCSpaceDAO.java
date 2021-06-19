@@ -20,20 +20,6 @@ public class JDBCSpaceDAO implements SpaceDAO {
 
     }
 
-
-    @Override
-    public List<Space> getAllSpaces() {
-        String sql = "SELECT id, venue_id, name, is_accessible, open_from, open_to, CAST(daily_rate AS DECIMAL(10,2)), max_occupancy FROM space";
-        SqlRowSet rows = jdbcTemplate.queryForRowSet(sql);
-
-        List<Space> spaces = new ArrayList<Space>();
-        while (rows.next()) {
-            Space space = mapRowToSpace(rows);
-            spaces.add(space);
-        }
-        return spaces;
-    }
-
     @Override
     public List<Space> getSpaceByVenueId(long id) {
         String sql = "SELECT id, venue_id, name, is_accessible, open_from, open_to, CAST(daily_rate AS DECIMAL(10,2)), max_occupancy FROM space WHERE venue_id = ?";
@@ -48,11 +34,6 @@ public class JDBCSpaceDAO implements SpaceDAO {
     }
 
     @Override
-    public List<Space> getSpaceByName(String name) {
-        return null;
-    }
-
-    @Override
     public List<Space> getSpaceAvailability(LocalDate startDate, int numberOfDays, int numberOfAttendees, Venue venue) {
 //        String userDateAsAString = menu.getStartDateFromUser();
 //        LocalDate dateAsALocalDate = LocalDate.parse(userDateAsAString); // 2021/06/21
@@ -62,7 +43,8 @@ public class JDBCSpaceDAO implements SpaceDAO {
         LocalDate endDate = startDate.plusDays(numberOfDays);
         int startMonth = startDate.getMonth().getValue();
         int endMonth = endDate.getMonth().getValue();
-        String sql = "SELECT space.id, venue.name AS venue_name, space.name AS space_name, coalesce(space_reservation_count.number_of_reservations, 0) AS number_of_reservations, space.max_occupancy, space.open_from, space.open_to, CAST(space.daily_rate AS DECIMAL(10,2)) " +
+        String sql = "SELECT space.id, venue.name AS venue_name, space.name AS space_name, coalesce(space_reservation_count.number_of_reservations, 0) AS number_of_reservations, " +
+                "space.max_occupancy, space.open_from, space.open_to, CAST(space.daily_rate AS DECIMAL(10,2)) " +
                 "FROM venue " +
                 "LEFT JOIN space ON venue.id = space.venue_id " +
                 "LEFT JOIN (" +

@@ -11,9 +11,12 @@ public class ExcelsiorCLI {
 
 	private static final String MAIN_MENU_DISPLAY_LIST_OF_VENUES = "1";
 	private static final String VENUE_MENU_SEARCH_FOR_RESERVATION = "2";
+	private static final String VIEW_SPACES_LIST = "1";
 	private static final String MAIN_MENU_QUIT = "Q";
 	private static final String RETURN_TO_PREVIOUS_MENU = "R";
 	private static final String CANCEL_RESERVATION_SEARCH = "0";
+	private static final String YES = "Y";
+	private static final String NO = "N";
 
 	private Menu menu;
 	private VenueDAO venueDAO;
@@ -79,34 +82,49 @@ public class ExcelsiorCLI {
 						String venueSubMenuChoice = menu.getSelectionFromVenueListSubMenu();
 						//If user enters "R", return to previous screen
 						if (venueSubMenuChoice.equalsIgnoreCase(RETURN_TO_PREVIOUS_MENU)) {
+							//continue;
 							break;
-						//If user enters "2", prompt user for information to check available spaces based on venue selection
-						} else if (venueSubMenuChoice.equalsIgnoreCase(VENUE_MENU_SEARCH_FOR_RESERVATION)) {
-							//Ask user for starting date they require space
-							LocalDate startDate = menu.getStartDateFromUser();
-							//Ask user for number of days they require space
-							int numberOfDays = menu.getNumberOfDAysFromUser();
-							//Ask user for number of attendees
-							int numberOfAttendees = menu.getNumberOfAttendeesFromUser();
-							//Display a list of all available spaces based on user input
-							List<Space> spaces = spaceDAO.getSpaceAvailability(startDate, numberOfDays, numberOfAttendees, venue);
-							menu.showAllAvailableSpaces(spaces, numberOfDays);
-							//Ask user if they would like to reserve a space from the list provided above
-							String searchReservationChoice = menu.getSpaceReservation();
-							if(searchReservationChoice.equalsIgnoreCase(CANCEL_RESERVATION_SEARCH)) {
-								break;
-							}
 						}
-						//Display list of venue spaces based on user venue selection
-						menu.getVenueSpaceHeader(venue);
-						List<Space> spaces = spaceDAO.getSpaceByVenueId(venue.getId());
-						while(true) {
+						else if(venueSubMenuChoice.equalsIgnoreCase("1")) {
+							//Display list of venue spaces based on user venue selection
+							menu.getVenueSpaceHeader(venue);
+							List<Space> spaces = spaceDAO.getSpaceByVenueId(venue.getId());
 							menu.showSpaceSelection(spaces);
 							//If user enters "R", return to previous screen
 							String spaceSubMenuChoice = menu.getSelectionFromSpaceListSubMenu();
-							if(spaceSubMenuChoice.equalsIgnoreCase(RETURN_TO_PREVIOUS_MENU)){
-								menu.showVenueDetails(venue);
-								break;
+							while (true) {
+								if (spaceSubMenuChoice.equalsIgnoreCase(RETURN_TO_PREVIOUS_MENU)) {
+									menu.showVenueDetails(venue);
+									break;
+								}
+							}
+						}
+						//If user enters "2", prompt user for information to check available spaces based on venue selection
+						else if (venueSubMenuChoice.equalsIgnoreCase(VENUE_MENU_SEARCH_FOR_RESERVATION)) {
+							while(true) {
+								//Ask user for starting date they require space
+								LocalDate startDate = menu.getStartDateFromUser();
+								//Ask user for number of days they require space
+								int numberOfDays = menu.getNumberOfDAysFromUser();
+								//Ask user for number of attendees
+								int numberOfAttendees = menu.getNumberOfAttendeesFromUser();
+								//Display a list of all available spaces based on user input
+								List<Space> availableSpaces = spaceDAO.getSpaceAvailability(startDate, numberOfDays, numberOfAttendees, venue);
+								if (availableSpaces.isEmpty()) {
+									String yesNoChoice = menu.getNewUserSelectionForNoAvailability();
+									if (yesNoChoice.equalsIgnoreCase(NO)) {
+										break;
+									} else if (yesNoChoice.equalsIgnoreCase(YES)) {
+										continue;
+									}
+								}
+								menu.showAllAvailableSpaces(availableSpaces, numberOfDays);
+								//Ask user if they would like to reserve a space from the list provided above
+								String searchReservationChoice = menu.getSpaceReservation();
+								if (searchReservationChoice.equalsIgnoreCase(CANCEL_RESERVATION_SEARCH)) {
+									menu.showVenueDetails(venue);
+									break;
+								}
 							}
 						}
 					}

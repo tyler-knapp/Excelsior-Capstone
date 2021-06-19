@@ -70,7 +70,8 @@ public class Menu {
             if(space.getOpenTo() > 0){
                 openTo = monthStrings[space.getOpenTo()-1];
             }
-            System.out.println(String.format("%-5s%-30s%-15s%-15s","#" + count, space.getName(), openFrom, openTo) + "$" + String.format("%1.2f%13s", space.getDailyRate(), space.getMaxOccupancy()));
+            System.out.println(String.format("%-5s%-30s%-15s%-15s","#" + count, space.getName(), openFrom, openTo) + "$" +
+                    String.format("%1.2f%13s", space.getDailyRate(), space.getMaxOccupancy()));
         }
     }
 
@@ -107,12 +108,30 @@ public class Menu {
         System.out.println("\n" + String.format("%-10s%-25s%-15s%-15s%-15s", "Space # ", "Name ", "Daily Rate ", "Max Occup.", "Accessible?") + "Total Cost");
 
         for (Space space : spaces) {
-            System.out.println(String.format("%-10s%-25s", space.getId(), space.getName()) + "$" + String.format("%1.2f%10s%18s%12s", space.getDailyRate(), space.getMaxOccupancy(), space.isAccessible(), "$") + (space.getDailyRate().intValue() * numberOfDays));
+            System.out.println(String.format("%-10s%-25s", space.getId(), space.getName()) + "$" +
+                    String.format("%1.2f%10s%18s%12s", space.getDailyRate(), space.getMaxOccupancy(), space.isAccessible(), "$") +
+                    (space.getDailyRate().intValue() * numberOfDays));
         }
     }
     public String getSpaceReservation() {
         System.out.println("\nWhich space would you like to reserve (enter 0 to cancel)? ");
         return in.nextLine();
+    }
+
+    public String getNewUserSelectionForNoAvailability() {
+        System.out.println("\nNo available spaces based on your search.");
+        System.out.println("Would you like to try a different search? (Y / N) ");
+        return in.nextLine();
+    }
+
+    public String getNameForReservation() {
+        System.out.println("\nWho is this reservation for ? ");
+        return in.nextLine();
+    }
+
+    public void showConfirmationDetails() {
+        System.out.println("\nThanks for submitting your reservation! The details for your event is listed below: ");
+        System.out.println("\nConfirmation #: ");
     }
 
 }

@@ -104,11 +104,11 @@ public class Space {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Space space = (Space) o;
-        return id == space.id && venueId == space.venueId && isAccessible == space.isAccessible && openFrom == space.openFrom && openTo == space.openTo && maxOccupancy == space.maxOccupancy && Objects.equals(name, space.name) && Objects.equals(dailyRate, space.dailyRate);
+        return id == space.id && venueId == space.venueId && isAccessible == space.isAccessible && openFrom == space.openFrom && openTo == space.openTo && maxOccupancy == space.maxOccupancy && numberOfReservations == space.numberOfReservations && Objects.equals(name, space.name) && Objects.equals(dailyRate.doubleValue(), space.dailyRate.doubleValue()) && Objects.equals(venueName, space.venueName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, venueId, name, isAccessible, openFrom, openTo, dailyRate, maxOccupancy);
+        return Objects.hash(id, venueId, name, isAccessible, openFrom, openTo, dailyRate, maxOccupancy, venueName, numberOfReservations);
     }
 }
