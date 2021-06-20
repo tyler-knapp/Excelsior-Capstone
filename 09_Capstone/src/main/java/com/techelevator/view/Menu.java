@@ -5,6 +5,7 @@ import com.techelevator.Space;
 import com.techelevator.Venue;
 
 import java.math.BigDecimal;
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -29,11 +30,11 @@ public class Menu {
         System.out.println("\nVENUE LIST");
         System.out.println("-----------------------------------");
         System.out.println("Which venue would you like to view?");
-        int count = 0;
-        for(Venue venue: venues) {
-            count++;
-            System.out.println("    " + count + ") " + venue.toString());
-        }
+            int count = 0;
+            for(Venue venue: venues) {
+                count++;
+                System.out.println("    " + count + ") " + venue.toString());
+            }
         System.out.println("    R) Return to Previous Screen");
         return in.nextLine();
     }
@@ -62,24 +63,23 @@ public class Menu {
     public void showSpaceSelection(List<Space> spaces){
         System.out.println(String.format("%-5s%-40s%-15s%-15s%-18s"," ", "Name", "Open", "Close", "Daily Rate") + "Max. Occupancy");
         int count = 0;
-
-        for(Space space : spaces){
-            count++;
-            String[] monthStrings = new DateFormatSymbols().getMonths();
-            String openFrom = "";
-            if(space.getOpenFrom() > 0){
-                openFrom = monthStrings[space.getOpenFrom()-1];
+            for(Space space : spaces){
+                count++;
+                String[] monthStrings = new DateFormatSymbols().getMonths();
+                String openFrom = "";
+                if(space.getOpenFrom() > 0){
+                    openFrom = monthStrings[space.getOpenFrom()-1];
+                }
+                String openTo ="";
+                if(space.getOpenTo() > 0){
+                    openTo = monthStrings[space.getOpenTo()-1];
+                }
+                System.out.println(String.format("%-5s%-40s%-15s%-15s","#" + count, space.getName(), openFrom, openTo) + "$" + String.format("%1.2f%13d", space.getDailyRate(),space.getMaxOccupancy()));
             }
-            String openTo ="";
-            if(space.getOpenTo() > 0){
-                openTo = monthStrings[space.getOpenTo()-1];
-            }
-            System.out.println(String.format("%-5s%-40s%-15s%-15s","#" + count, space.getName(), openFrom, openTo) + "$" + String.format("%1.2f%13d", space.getDailyRate(),space.getMaxOccupancy()));
-        }
     }
 
     public void showInvalidSelectionMessage() {
-        System.out.println("\nInvalid selection, please try again.");
+        System.out.println("\n*** YOUR INPUT IS NOT A VALID SELECTION, PLEASE TRY AGAIN! ***");
     }
 
     public String getSelectionFromSpaceListSubMenu (){
@@ -89,35 +89,106 @@ public class Menu {
     }
 
     public LocalDate getStartDateFromUser(){
-        System.out.println("\nRESERVE A SPACE");
-        System.out.println("-----------------------------------");
-        System.out.print("When do you need this space? ");
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
-        return LocalDate.parse(in.nextLine(), formatter);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("[M/d/yyyy][M/d/yy][yyyy/M/d][yy/M/d][yy-M-d][yyyy-M-d][M-d-yyyy][M-d-yy]");
+        while(true){
+            System.out.println("\nRESERVE A SPACE");
+            System.out.println("-----------------------------------");
+            System.out.print("When do you need this space? ");
+            String userInput = in.nextLine();
+            LocalDate startDate = null;
+            try {
+                startDate = LocalDate.parse(userInput, formatter);
+            } catch (DateTimeException e){
+                showValidDate();
+                continue;
+            }
+            if(startDate == null ) {
+                showValidDate();
+            } else if(startDate.isBefore(LocalDate.now())){
+                showPleaseEnterAFutureDate();
+            } else {
+                return startDate;
+            }
+        }
     }
 
-    public int getNumberOfDAysFromUser(){
-        System.out.print("How many days will you need the space? ");
-        return Integer.parseInt(in.nextLine());
+    public int getNumberOfDaysFromUser(){
+        while(true){
+            System.out.print("How many days will you need the space? ");
+            String userInput = in.nextLine();
+            int numberOfDays = 0;
+            try {
+                numberOfDays = Integer.parseInt(userInput);
+            } catch (NumberFormatException e){
+                showPleaseEnterANumber();
+                continue;
+            }
+            if(numberOfDays <=0 ){
+                showPleaseEnterANumberGreaterThanZero();
+            } else {
+                return numberOfDays;
+            }
+        }
     }
 
     public int getNumberOfAttendeesFromUser(){
-        System.out.print("How many people will be in attendance? ");
-        return Integer.parseInt(in.nextLine());
+        while(true){
+            System.out.print("How many people will be in attendance? ");
+            String userInput = in.nextLine();
+            int numberOfAttendees = 0;
+            try {
+                numberOfAttendees = Integer.parseInt(userInput);
+            } catch (NumberFormatException e){
+                showPleaseEnterANumber();
+                continue;
+            }
+            if(numberOfAttendees <=0 ){
+                showPleaseEnterANumberGreaterThanZero();
+            } else {
+                return numberOfAttendees;
+            }
+        }
+    }
+
+    public void showPleaseEnterANumber() {
+        System.out.println("\n*** YOUR INPUT IS NOT VALID, PLEASE ENTER A NUMBER! ***");
+    }
+
+    public void showPleaseEnterAFutureDate(){
+        System.out.println("\n*** PLEASE ENTER A FUTURE DATE! ***");
+    }
+
+    public void showPleaseEnterANumberGreaterThanZero() {
+        System.out.println("\n*** YOUR INPUT IS NOT VALID, PLEASE ENTER A NUMBER GREATER THAN ZERO! ***");
+    }
+
+    public void showValidDate() {
+        System.out.println("\n*** INVALID DATE, PLEASE TRY AGAIN! ***");
     }
 
     public void showAllAvailableSpaces(List<Space> spaces, int numberOfDays) {
         System.out.println("\nThe following spaces are available based on your needs: ");
-        System.out.println("\n" + String.format("%-10s%-30s%-15s%-15s%-15s", "Space # ", "Name ", "Daily Rate ", "Max Occup.", "Accessible?") + "Total Cost");
+        System.out.println("\n" + String.format("%-10s%-40s%-15s%-15s%-15s", "Space # ", "Name ", "Daily Rate ", "Max Occup.", "Accessible?") + "Total Cost");
 
         for (Space space : spaces) {
-            System.out.println(String.format("%-10s%-30s%-15s%-15s%-15s", space.getId(), space.getName(), "$" + space.getDailyRate().intValue(), space.getMaxOccupancy(), space.isAccessible()) +
+            System.out.println(String.format("%-10s%-40s%-15s%-15s%-15s", space.getId(), space.getName(), "$" + space.getDailyRate().intValue(), space.getMaxOccupancy(), space.isAccessible()) +
                     "$" + (space.getDailyRate().intValue() * numberOfDays));
         }
     }
-    public String getSpaceReservation() {
-        System.out.print("\nWhich space would you like to reserve (enter 0 to cancel)? ");
-        return in.nextLine();
+    public int getSpaceReservation() {
+        while(true){
+            System.out.print("\nWhich space would you like to reserve (enter 0 to cancel)? ");
+            String userInput = in.nextLine();
+            int spaceSelection = 0;
+            try {
+                spaceSelection = Integer.parseInt(userInput);
+            } catch (NumberFormatException e){
+                showPleaseEnterANumber();
+                continue;
+            }
+                return spaceSelection;
+        }
     }
 
     public String getNewUserSelectionForNoAvailability() {
@@ -132,7 +203,7 @@ public class Menu {
     }
 
     public void showConfirmationDetails(Reservation reservation, Venue venue, Space space, int numberOfDays) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("M/d/yyyy");
         System.out.println("\nThanks for submitting your reservation! The details for your event is listed below: ");
         System.out.println("\nConfirmation #: " + reservation.getReservationId() + "\n" + "Venue: " + venue.getName() + "\n" +
                 "Space: " + space.getName() + "\n" + "Reserved For: " + reservation.getReservedFor() + "\n" +
