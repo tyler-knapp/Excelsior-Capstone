@@ -198,7 +198,7 @@ public class Menu {
     }
 
     public String getNameForReservation() {
-        System.out.print("Who is this reservation for ? ");
+        System.out.print("Who is this reservation for? ");
         return in.nextLine();
     }
 

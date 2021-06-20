@@ -71,9 +71,7 @@ public class ExcelsiorCLI {
 						String venueMenuChoice = menu.getVenueSelection(venues);
 						//The if statement below was included to make sure that a user enters a value and not an empty string
 						//otherwise, a exception will occur
-//						if (venueMenuChoice.equalsIgnoreCase("")) {
-//							continue;
-//						}
+
 						//Moved this above venueIndex to avoid the input being parsed into an int
 						//If user enters "R", return to the previous screen
 						if (venueMenuChoice.equalsIgnoreCase(RETURN_TO_PREVIOUS_MENU)) {
@@ -101,24 +99,22 @@ public class ExcelsiorCLI {
 									menu.showInvalidSelectionMessage();
 								}
 								else if (venueSubMenuChoice.equalsIgnoreCase(VENUE_MENU_SPACES)) {
-									//Display list of venue spaces based on user venue selection
-									menu.getVenueSpaceHeader(venue);
-									List<Space> spaces = spaceDAO.getSpaceByVenueId(venue.getId());
-									menu.showSpaceSelection(spaces);
-									//If user enters "R", return to previous screen
-									String spaceSubMenuChoice = menu.getSelectionFromSpaceListSubMenu();
+
 									while (true) {
+										//Display list of venue spaces based on user venue selection
+										menu.getVenueSpaceHeader(venue);
+										List<Space> spaces = spaceDAO.getSpaceByVenueId(venue.getId());
+										menu.showSpaceSelection(spaces);
+										//If user enters "R", return to previous screen
+										String spaceSubMenuChoice = menu.getSelectionFromSpaceListSubMenu();
 										if (spaceSubMenuChoice.equalsIgnoreCase(RETURN_TO_PREVIOUS_MENU)) {
 											menu.showVenueDetails(venue);
 											break;
 										} else if (spaceSubMenuChoice.equalsIgnoreCase(RESERVE_SPACE)) {
-											reservationLoop :
-											{
+											reservationLoop : {
 												while (true) {
 													//Ask user for starting date they require space
 													LocalDate startDate = menu.getStartDateFromUser();
-//													DateTimeFormatter formatter = DateTimeFormatter.ofPattern("M/d/yyyy");
-//													if(menu.getStartDateFromUser() != (formatter))
 													//Ask user for number of days they require space
 													int numberOfDays = menu.getNumberOfDaysFromUser();
 													//Ask user for number of attendees
