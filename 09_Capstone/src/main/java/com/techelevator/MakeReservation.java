@@ -22,18 +22,18 @@ public class MakeReservation {
         //Ask user for starting date they require space
         LocalDate startDate = menu.getStartDateFromUser();
         //Ask user for number of days they require space
-        int numberOfDays = menu.getNumberOfDAysFromUser();
+        int numberOfDays = menu.getNumberOfDaysFromUser();
         //Ask user for number of attendees
         int numberOfAttendees = menu.getNumberOfAttendeesFromUser();
         List<Space> availableSpaces = spaceDAO.getSpaceAvailability(startDate, numberOfDays, numberOfAttendees, venue);
         menu.showAllAvailableSpaces(availableSpaces, numberOfDays);
         //Ask user if they would like to reserve a space from the list provided above
-        String searchReservationChoice = menu.getSpaceReservation();
+        int searchReservationChoice = menu.getSpaceReservation();
         String reservationName = menu.getNameForReservation();
 
-        Space space = spaceDAO.getSpaceBySpaceId(Integer.parseInt(searchReservationChoice));
+        Space space = spaceDAO.getSpaceBySpaceId(searchReservationChoice);
         Reservation newReservation = new Reservation();
-        newReservation.setSpaceId(Long.parseLong(searchReservationChoice));
+        newReservation.setSpaceId(searchReservationChoice);
         newReservation.setStartDate(startDate);
         newReservation.setEndDate(startDate.plusDays(numberOfDays));
         newReservation.setNumberOfAttendees(numberOfAttendees);
