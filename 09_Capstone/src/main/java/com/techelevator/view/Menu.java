@@ -60,7 +60,7 @@ public class Menu {
     }
 
     public void showSpaceSelection(List<Space> spaces){
-        System.out.println(String.format("%-5s%-30s%-15s%-15s%-18s"," ", "Name", "Open", "Close", "Daily Rate") + "Max. Occupancy");
+        System.out.println(String.format("%-5s%-40s%-15s%-15s%-18s"," ", "Name", "Open", "Close", "Daily Rate") + "Max. Occupancy");
         int count = 0;
 
         for(Space space : spaces){
@@ -74,8 +74,7 @@ public class Menu {
             if(space.getOpenTo() > 0){
                 openTo = monthStrings[space.getOpenTo()-1];
             }
-            System.out.println(String.format("%-5s%-30s%-15s%-15s","#" + count, space.getName(), openFrom, openTo) + "$" +
-                    String.format("%1.2f%13s", space.getDailyRate(), space.getMaxOccupancy()));
+            System.out.println(String.format("%-5s%-40s%-15s%-15s","#" + count, space.getName(), openFrom, openTo) + "$" + String.format("%1.2f%13d", space.getDailyRate(),space.getMaxOccupancy()));
         }
     }
 
@@ -109,36 +108,36 @@ public class Menu {
 
     public void showAllAvailableSpaces(List<Space> spaces, int numberOfDays) {
         System.out.println("\nThe following spaces are available based on your needs: ");
-        System.out.println("\n" + String.format("%-10s%-25s%-15s%-15s%-15s", "Space # ", "Name ", "Daily Rate ", "Max Occup.", "Accessible?") + "Total Cost");
+        System.out.println("\n" + String.format("%-10s%-30s%-15s%-15s%-15s", "Space # ", "Name ", "Daily Rate ", "Max Occup.", "Accessible?") + "Total Cost");
 
         for (Space space : spaces) {
-            System.out.println(String.format("%-10s%-25s", space.getId(), space.getName()) + "$" +
-                    String.format("%1.2f%10s%18s%12s", space.getDailyRate(), space.getMaxOccupancy(), space.isAccessible(), "$") +
-                    (space.getDailyRate().intValue() * numberOfDays));
+            System.out.println(String.format("%-10s%-30s%-15s%-15s%-15s", space.getId(), space.getName(), "$" + space.getDailyRate().intValue(), space.getMaxOccupancy(), space.isAccessible()) +
+                    "$" + (space.getDailyRate().intValue() * numberOfDays));
         }
     }
     public String getSpaceReservation() {
-        System.out.println("\nWhich space would you like to reserve (enter 0 to cancel)? ");
+        System.out.print("\nWhich space would you like to reserve (enter 0 to cancel)? ");
         return in.nextLine();
     }
 
     public String getNewUserSelectionForNoAvailability() {
         System.out.println("\nNo available spaces based on your search.");
-        System.out.println("Would you like to try a different search? (Y / N) ");
+        System.out.print("Would you like to try a different search? (Y / N) ");
         return in.nextLine();
     }
 
     public String getNameForReservation() {
-        System.out.println("Who is this reservation for ? ");
+        System.out.print("Who is this reservation for ? ");
         return in.nextLine();
     }
 
     public void showConfirmationDetails(Reservation reservation, Venue venue, Space space, int numberOfDays) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
         System.out.println("\nThanks for submitting your reservation! The details for your event is listed below: ");
         System.out.println("\nConfirmation #: " + reservation.getReservationId() + "\n" + "Venue: " + venue.getName() + "\n" +
                 "Space: " + space.getName() + "\n" + "Reserved For: " + reservation.getReservedFor() + "\n" +
-                "Attendees: " + reservation.getNumberOfAttendees() + "\n" + "Arrival Date: " + reservation.getStartDate() +
-                "\n" + "Depart Date: " + reservation.getEndDate() + "\n" + "Total Cost: " + (space.getDailyRate().intValue() * numberOfDays));
+                "Attendees: " + reservation.getNumberOfAttendees() + "\n" + "Arrival Date: " + reservation.getStartDate().format(formatter) +
+                "\n" + "Depart Date: " + reservation.getEndDate().format(formatter) + "\n" + "Total Cost: $" + (space.getDailyRate().intValue() * numberOfDays));
     }
 
 }
