@@ -129,7 +129,7 @@ public class Menu {
     }
 
     public String getNameForReservation() {
-        System.out.println("\nWho is this reservation for ? ");
+        System.out.println("Who is this reservation for ? ");
         return in.nextLine();
     }
 

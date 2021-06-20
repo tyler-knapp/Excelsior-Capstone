@@ -48,18 +48,17 @@ public class JDBCSpaceDAOIntegrationTest extends DAOIntegrationTest {
     }
 
     @Test
-    public void retrieve_space_availability() {
-
-        //create a new venue
+    public void no_space_availability() {
+       /* //create a new venue
         Venue venue = getVenue("testVenueName");
         createNewTestVenue(venue);
-
-        Reservation reservation = getReservation(1, "testReservationName");
-        createNewTestReservation(reservation);
 
         //create new space (make sure space is associated with venue)
         Space space = getSpaceByReservation(venue, reservation);
         createNewTestSpace(space);
+
+        Reservation reservation = getReservation(1, "testReservationName");
+        createNewTestReservation(reservation);
         long numberOfDays = ChronoUnit.DAYS.between(reservation.getStartDate(), reservation.getEndDate());
         List<Space> originalList = spaceDAO.getSpaceAvailability(LocalDate.of(2021,06,12), 5, 20, venue);
 
@@ -67,8 +66,44 @@ public class JDBCSpaceDAOIntegrationTest extends DAOIntegrationTest {
         List<Space> availableSpaces = spaceDAO.getSpaceAvailability(reservation.getStartDate(), (int) numberOfDays, reservation.getNumberOfAttendees(), venue);
 
         //make sure space is in list
-        Assert.assertEquals(originalList.size(), availableSpaces.size());
+        Assert.assertEquals(originalList.size(), availableSpaces.size());*/
 
+        //Setup
+        Venue venue = getVenue("testVenueName");
+        createNewTestVenue(venue);
+
+        Space space = getSpaceByVenue("testSpaceName", venue);
+        createNewTestSpace(space);
+
+        Reservation reservation = getReservation("testReservationName", space);
+        createNewTestReservation(reservation);
+
+        //Test
+        //These are where there parameters to check for space availability are set: what is used to check against the reservation that we created
+        List<Space> availableSpaces = spaceDAO.getSpaceAvailability(LocalDate.of(2021, 6, 9), 2,10, venue);
+
+        //Verify
+        Assert.assertEquals("There are no available spaces", 0, availableSpaces.size());
+    }
+
+    @Test
+    public void space_availability() {
+        //Setup
+        Venue venue = getVenue("testVenueName");
+        createNewTestVenue(venue);
+
+        Space space = getSpaceByVenue("testSpaceName", venue);
+        createNewTestSpace(space);
+
+        Reservation reservation = getReservation("testReservationName", space);
+        createNewTestReservation(reservation);
+
+        //Test
+        List<Space> availableSpaces = spaceDAO.getSpaceAvailability(LocalDate.of(2021, 6, 15), 5,10, venue);
+
+        //Verify
+        //These are where there parameters to check for space availability are set: what is used to check against the reservation that we created
+        Assert.assertEquals(1, availableSpaces.size());
     }
 
     private Boolean isSpaceInList(Space space, List<Space> spaces) {
@@ -80,10 +115,11 @@ public class JDBCSpaceDAOIntegrationTest extends DAOIntegrationTest {
         return false;
     }
 
-    private Reservation getReservation(long reservationId, String reservationName) {
+    private Reservation getReservation(String reservationName, Space space) {
         Reservation reservation = new Reservation();
-        reservation.setReservationId(reservationId);
-        reservation.setSpaceId(1);
+        //Only need to set ids for update clauses
+        //reservation.setReservationId(reservationId);
+        reservation.setSpaceId(space.getId());
         reservation.setNumberOfAttendees(100);
         reservation.setStartDate(LocalDate.of(2021, 6, 10));
         reservation.setEndDate(LocalDate.of(2021,6, 14));
@@ -99,7 +135,7 @@ public class JDBCSpaceDAOIntegrationTest extends DAOIntegrationTest {
         reservation.setReservationId(rows.getLong("reservation_id"));
     }
 
-    private  Space getSpaceByReservation(Venue venue, Reservation reservation) {
+    /*private  Space getSpaceByReservation(Venue venue, Reservation reservation) {
         Space space = new Space();
         space.setVenueId(venue.getId());
         space.setName("testSpaceName");
@@ -110,7 +146,7 @@ public class JDBCSpaceDAOIntegrationTest extends DAOIntegrationTest {
         reservation.setStartDate(LocalDate.of(2021, 6, 10));
         reservation.setEndDate(LocalDate.of(2021, 6,14));
         return space;
-    }
+    }*/
 
     private void createNewTestSpace(Space space) {
         String sql = "INSERT INTO space (id, venue_id, name, is_accessible, daily_rate, max_occupancy) " +
