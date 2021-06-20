@@ -74,7 +74,8 @@ public class Menu {
             if(space.getOpenTo() > 0){
                 openTo = monthStrings[space.getOpenTo()-1];
             }
-            System.out.println(String.format("%-5s%-40s%-15s%-15s","#" + count, space.getName(), openFrom, openTo) + "$" + String.format("%1.2f%13d", space.getDailyRate(),space.getMaxOccupancy()));
+            System.out.println(String.format("%-5s%-40s%-15s%-15s","#" + count, space.getName(), openFrom, openTo) + "$" +
+                    String.format("%1.2f%13d", space.getDailyRate(),space.getMaxOccupancy()));
         }
     }
 
