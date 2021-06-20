@@ -1,5 +1,7 @@
 package com.techelevator;
 
+import com.techelevator.dao.ReservationDAO;
+import com.techelevator.jdbc.JDBCReservationDAO;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

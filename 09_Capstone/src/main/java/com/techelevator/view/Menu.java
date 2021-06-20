@@ -1,4 +1,8 @@
-package com.techelevator;
+package com.techelevator.view;
+
+import com.techelevator.Reservation;
+import com.techelevator.Space;
+import com.techelevator.Venue;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

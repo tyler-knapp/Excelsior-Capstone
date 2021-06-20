@@ -1,11 +1,13 @@
-package com.techelevator;
+package com.techelevator.jdbc;
 
+import com.techelevator.Space;
+import com.techelevator.dao.SpaceDAO;
+import com.techelevator.Venue;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import javax.sql.DataSource;
 
@@ -47,11 +49,6 @@ public class JDBCSpaceDAO implements SpaceDAO {
 
     @Override
     public List<Space> getSpaceAvailability(LocalDate startDate, int numberOfDays, int numberOfAttendees, Venue venue) {
-//        String userDateAsAString = menu.getStartDateFromUser();
-//        LocalDate dateAsALocalDate = LocalDate.parse(userDateAsAString); // 2021/06/21
-//        String[] dateAsAnArray = userDateAsAString.split("/");
-//        String month = dateAsAnArray[1];
-//        int monthAsAnInt = Integer.parseInt(month);
         LocalDate endDate = startDate.plusDays(numberOfDays);
         int startMonth = startDate.getMonth().getValue();
         int endMonth = endDate.getMonth().getValue();

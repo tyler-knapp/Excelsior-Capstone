@@ -1,5 +1,7 @@
-package com.techelevator;
+package com.techelevator.jdbc;
 
+import com.techelevator.Venue;
+import com.techelevator.dao.VenueDAO;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 

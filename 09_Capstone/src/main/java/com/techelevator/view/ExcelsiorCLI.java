@@ -1,7 +1,16 @@
-package com.techelevator;
+package com.techelevator.view;
 
 import javax.sql.DataSource;
 
+import com.techelevator.Reservation;
+import com.techelevator.Space;
+import com.techelevator.Venue;
+import com.techelevator.dao.ReservationDAO;
+import com.techelevator.dao.SpaceDAO;
+import com.techelevator.dao.VenueDAO;
+import com.techelevator.jdbc.JDBCReservationDAO;
+import com.techelevator.jdbc.JDBCSpaceDAO;
+import com.techelevator.jdbc.JDBCVenueDAO;
 import org.apache.commons.dbcp2.BasicDataSource;
 
 import java.time.LocalDate;
@@ -11,6 +20,7 @@ public class ExcelsiorCLI {
 
 	private static final String MAIN_MENU_DISPLAY_LIST_OF_VENUES = "1";
 	private static final String VENUE_MENU_SEARCH_FOR_RESERVATION = "2";
+	private static final String VENUE_MENU_SPACES = "1";
 	private static final String RESERVE_SPACE = "1";
 	private static final String MAIN_MENU_QUIT = "Q";
 	private static final String RETURN_TO_PREVIOUS_MENU = "R";
@@ -86,7 +96,7 @@ public class ExcelsiorCLI {
 							if (venueSubMenuChoice.equalsIgnoreCase(RETURN_TO_PREVIOUS_MENU)) {
 								//continue;
 								break;
-							} else if (venueSubMenuChoice.equalsIgnoreCase("1")) {
+							} else if (venueSubMenuChoice.equalsIgnoreCase(VENUE_MENU_SPACES)) {
 								//Display list of venue spaces based on user venue selection
 								menu.getVenueSpaceHeader(venue);
 								List<Space> spaces = spaceDAO.getSpaceByVenueId(venue.getId());

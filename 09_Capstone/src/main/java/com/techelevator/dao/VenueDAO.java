@@ -1,4 +1,6 @@
-package com.techelevator;
+package com.techelevator.dao;
+
+import com.techelevator.Venue;
 
 import java.util.List;
 

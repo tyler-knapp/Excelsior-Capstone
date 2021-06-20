@@ -1,4 +1,7 @@
-package com.techelevator;
+package com.techelevator.dao;
+
+import com.techelevator.Space;
+import com.techelevator.Venue;
 
 import java.time.LocalDate;
 import java.util.List;
