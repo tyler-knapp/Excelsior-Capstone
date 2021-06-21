@@ -14,12 +14,9 @@ import javax.sql.DataSource;
 public class JDBCSpaceDAO implements SpaceDAO {
 
     private JdbcTemplate jdbcTemplate;
-    //private Menu menu;
-    private Space space;
 
     public JDBCSpaceDAO(DataSource datasource) {
         this.jdbcTemplate = new JdbcTemplate(datasource);
-
     }
 
     @Override
@@ -109,8 +106,7 @@ public class JDBCSpaceDAO implements SpaceDAO {
         }
         return space;
     }
-
-
+    
 }
 
 

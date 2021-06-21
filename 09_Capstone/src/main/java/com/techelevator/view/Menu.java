@@ -30,11 +30,11 @@ public class Menu {
         System.out.println("\nVENUE LIST");
         System.out.println("-----------------------------------");
         System.out.println("Which venue would you like to view?");
-            int count = 0;
-            for(Venue venue: venues) {
-                count++;
-                System.out.println("    " + count + ") " + venue.toString());
-            }
+        int count = 0;
+        for(Venue venue: venues) {
+            count++;
+            System.out.println("    " + count + ") " + venue.toString());
+        }
         System.out.println("    R) Return to Previous Screen");
         return in.nextLine();
     }
@@ -78,10 +78,6 @@ public class Menu {
             }
     }
 
-    public void showInvalidSelectionMessage() {
-        System.out.println("\n*** YOUR INPUT IS NOT A VALID SELECTION, PLEASE TRY AGAIN! ***");
-    }
-
     public String getSelectionFromSpaceListSubMenu (){
         System.out.println("\nWhat would you like to do next?");
         System.out.println("    1) Reserve a Space\n    R) Return to Previous Screen");
@@ -89,7 +85,6 @@ public class Menu {
     }
 
     public LocalDate getStartDateFromUser(){
-
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("[M/d/yyyy][M/d/yy][yyyy/M/d][yy/M/d][yy-M-d][yyyy-M-d][M-d-yyyy][M-d-yy]");
         while(true){
             System.out.println("\nRESERVE A SPACE");
@@ -151,22 +146,6 @@ public class Menu {
         }
     }
 
-    public void showPleaseEnterANumber() {
-        System.out.println("\n*** YOUR INPUT IS NOT VALID, PLEASE ENTER A NUMBER! ***");
-    }
-
-    public void showPleaseEnterAFutureDate(){
-        System.out.println("\n*** PLEASE ENTER A FUTURE DATE! ***");
-    }
-
-    public void showPleaseEnterANumberGreaterThanZero() {
-        System.out.println("\n*** YOUR INPUT IS NOT VALID, PLEASE ENTER A NUMBER GREATER THAN ZERO! ***");
-    }
-
-    public void showValidDate() {
-        System.out.println("\n*** INVALID DATE, PLEASE TRY AGAIN! ***");
-    }
-
     public void showAllAvailableSpaces(List<Space> spaces, int numberOfDays) {
         System.out.println("\nThe following spaces are available based on your needs: ");
         System.out.println("\n" + String.format("%-10s%-40s%-15s%-15s%-15s", "Space # ", "Name ", "Daily Rate ", "Max Occup.", "Accessible?") + "Total Cost");
@@ -205,10 +184,30 @@ public class Menu {
     public void showConfirmationDetails(Reservation reservation, Venue venue, Space space, int numberOfDays) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("M/d/yyyy");
         System.out.println("\nThanks for submitting your reservation! The details for your event is listed below: ");
-        System.out.println("\nConfirmation #: " + reservation.getReservationId() + "\n" + "Venue: " + venue.getName() + "\n" +
+        System.out.println(String.format("%5s", "\nConfirmation #: ") + reservation.getReservationId() + String.format("%1s", "\nVenue: ") + venue.getName() + "\n" +
                 "Space: " + space.getName() + "\n" + "Reserved For: " + reservation.getReservedFor() + "\n" +
                 "Attendees: " + reservation.getNumberOfAttendees() + "\n" + "Arrival Date: " + reservation.getStartDate().format(formatter) +
                 "\n" + "Depart Date: " + reservation.getEndDate().format(formatter) + "\n" + "Total Cost: $" + (space.getDailyRate().intValue() * numberOfDays));
+    }
+
+    public void showInvalidSelectionMessage() {
+        System.out.println("\n*** YOUR INPUT IS NOT A VALID SELECTION, PLEASE TRY AGAIN! ***");
+    }
+
+    public void showPleaseEnterANumber() {
+        System.out.println("\n*** YOUR INPUT IS NOT VALID, PLEASE ENTER A NUMBER! ***");
+    }
+
+    public void showPleaseEnterAFutureDate(){
+        System.out.println("\n*** PLEASE ENTER A FUTURE DATE! ***");
+    }
+
+    public void showPleaseEnterANumberGreaterThanZero() {
+        System.out.println("\n*** YOUR INPUT IS NOT VALID, PLEASE ENTER A NUMBER GREATER THAN ZERO! ***");
+    }
+
+    public void showValidDate() {
+        System.out.println("\n*** INVALID DATE, PLEASE TRY AGAIN! ***");
     }
 
 }

@@ -10,7 +10,6 @@ import javax.sql.DataSource;
 public class JDBCReservationDAO implements ReservationDAO {
 
     private JdbcTemplate jdbcTemplate;
-    private Reservation reservation;
 
     public JDBCReservationDAO(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
